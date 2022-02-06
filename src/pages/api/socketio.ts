@@ -1,6 +1,6 @@
 import type { NextApiRequest } from "next";
 import { Server as ServerIO } from "socket.io";
-import { Server as NetServer } from "http";
+import { Server as HttpServer } from "http";
 import type { NextApiResponseIo } from "types/NextApiResponse";
 
 export const config = {
@@ -14,7 +14,7 @@ const socketioHandler = async (req: NextApiRequest, res: NextApiResponseIo) => {
   if (!res.socket.server.io) {
     console.log("New Socket.io server...");
 
-    const httpServer: NetServer = res.socket.server as any;
+    const httpServer: HttpServer = res.socket.server as any;
     const io = new ServerIO(httpServer, {
       path: "/api/socketio",
     });

@@ -2,7 +2,7 @@ import { NextApiRequest } from "next";
 import type { NextApiResponseIo } from "types/NextApiResponse";
 
 const chatHandler = (req: NextApiRequest, res: NextApiResponseIo) => {
-  const method: string = req.method!;
+  const method: string = req.method!.toUpperCase();
   if (method === "GET") {
     return res.status(200).json({ msg: "Method should be POST" });
   }
