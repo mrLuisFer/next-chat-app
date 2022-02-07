@@ -1,19 +1,16 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import * as io from "socket.io-client";
 import { nanoid } from "nanoid";
-import type { IMsg } from "types/IMsg";
-import ChatInputs from "./ChatInputs";
 import { useChatCtx } from "context/ChatContext";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
-
-const user: string = `User@${new Date().getTime()}`;
+import type { IMsg } from "types/IMsg";
+import { useUserContext } from "context/UserContext";
+import ChatInputs from "./ChatInputs";
 
 export default function Chat() {
-  const [connected, setConnected] = useState<boolean>(false);
   const { chat, setChat } = useChatCtx();
+  const { connected, setConnected, username } = useUserContext();
 
-  // Can use the hook useCallback (?)
-  const handleSocketIoConnection = () => {
+  useEffect((): any => {
     const baseUrl: string = process.env.BASE_URL!;
     const socket = io.connect(baseUrl, {
       path: "/api/socketio",
@@ -28,10 +25,12 @@ export default function Chat() {
       setChat((c) => [...c, message]);
     });
 
-    if (socket) return () => socket.disconnect();
-  };
-  useEffect((): any => {
-    handleSocketIoConnection();
+    if (socket) {
+      return () => {
+        socket.disconnect();
+        setConnected(false);
+      };
+    }
   }, []);
 
   return (
@@ -40,14 +39,24 @@ export default function Chat() {
         {chat.length ? (
           chat.map((c) => (
             <div key={`msg_${nanoid()}`}>
-              <span>{c.user === user ? "Me" : c.user}</span>: {c.msg}
+              <span
+                style={{
+                  width: "0.5rem",
+                  height: "0.5rem",
+                  borderRadius: "50%",
+                  background: connected ? "green" : "gray",
+                }}
+              >
+                p
+              </span>
+              <span>{c.user === username ? "Me" : c.user}</span>: {c.msg}
             </div>
           ))
         ) : (
           <div>No chat messages</div>
         )}
       </div>
-      <ChatInputs connected={connected} user={user} />
+      <ChatInputs />
     </>
   );
 }
