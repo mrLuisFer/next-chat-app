@@ -1,11 +1,14 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import ChatContextProvider from "context/ChatContext";
+import UserContextProvider from "context/UserContext";
 
 function App({ Component, pageProps }: AppProps) {
   return (
     <ChatContextProvider>
-      <Component {...pageProps} />
+      <UserContextProvider>
+        <Component {...pageProps} />
+      </UserContextProvider>
     </ChatContextProvider>
   );
 }
