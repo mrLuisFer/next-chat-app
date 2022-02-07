@@ -1,23 +1,21 @@
-import { useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { IMsg } from "types/IMsg";
+import { useUserContext } from "context/UserContext";
 
-interface ChatInputsProps {
-  connected: boolean;
-  user: string
-}
-
-export default function ChatInputs({ connected, user }: ChatInputsProps) {
+export default function ChatInputs() {
   const [msg, setMsg] = useState<string>("");
+  const { connected, username } = useUserContext();
   const inputRef: any = useRef(null);
 
-  const sendMessage = async () => {
+  const handleSendMessage = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (msg) {
       const message: IMsg = {
-        user,
+        user: username,
         msg,
       };
 
-      const resp = await fetch("/api/chat", {
+      const resp: Response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,37 +24,25 @@ export default function ChatInputs({ connected, user }: ChatInputsProps) {
       });
 
       if (resp.ok) setMsg("");
+      console.log(msg);
     }
 
     inputRef?.current?.focus();
   };
 
   return (
-    <div>
-      <div>
-        <div>
-          <input
-            ref={inputRef}
-            type="text"
-            value={msg}
-            placeholder={connected ? "Type a message..." : "Connecting..."}
-            disabled={!connected}
-            onChange={(e) => {
-              setMsg(e.target.value);
-            }}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                sendMessage();
-              }
-            }}
-          />
-        </div>
-        <div>
-          <button onClick={sendMessage} disabled={!connected}>
-            SEND
-          </button>
-        </div>
-      </div>
-    </div>
+    <form onSubmit={(e) => handleSendMessage(e)}>
+      <input
+        ref={inputRef}
+        type="text"
+        value={msg}
+        placeholder={connected ? "Type a message..." : "Connecting..."}
+        disabled={!connected}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          setMsg(e.target.value);
+        }}
+      />
+      <button disabled={!connected}>SEND</button>
+    </form>
   );
 }
