@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { IMsg } from "types/IMsg";
 import { useUserContext } from "context/UserContext";
+import { Box } from "@chakra-ui/react";
 
 export default function ChatInputs() {
   const [msg, setMsg] = useState<string>("");
@@ -31,18 +32,20 @@ export default function ChatInputs() {
   };
 
   return (
-    <form onSubmit={(e) => handleSendMessage(e)}>
-      <input
-        ref={inputRef}
-        type="text"
-        value={msg}
-        placeholder={connected ? "Type a message..." : "Connecting..."}
-        disabled={!connected}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          setMsg(e.target.value);
-        }}
-      />
-      <button disabled={!connected}>SEND</button>
-    </form>
+    <Box position="fixed" bottom="3rem" w="100%" h="min-content">
+      <form onSubmit={(e) => handleSendMessage(e)}>
+        <input
+          ref={inputRef}
+          type="text"
+          value={msg}
+          placeholder={connected ? "Type a message..." : "Connecting..."}
+          disabled={!connected}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setMsg(e.target.value);
+          }}
+        />
+        <button disabled={!connected}>SEND</button>
+      </form>
+    </Box>
   );
 }

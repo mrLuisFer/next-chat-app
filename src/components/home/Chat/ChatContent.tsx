@@ -4,9 +4,9 @@ import { nanoid } from "nanoid";
 import { useChatCtx } from "context/ChatContext";
 import type { IMsg } from "types/IMsg";
 import { useUserContext } from "context/UserContext";
-import ChatInputs from "./ChatInputs";
+import { Box } from "@chakra-ui/react";
 
-export default function Chat() {
+export default function ChatContent() {
   const { chat, setChat } = useChatCtx();
   const { connected, setConnected, username } = useUserContext();
 
@@ -34,29 +34,26 @@ export default function Chat() {
   }, []);
 
   return (
-    <>
-      <div>
-        {chat.length ? (
-          chat.map((c) => (
-            <div key={`msg_${nanoid()}`}>
-              <span
-                style={{
-                  width: "0.5rem",
-                  height: "0.5rem",
-                  borderRadius: "50%",
-                  background: connected ? "green" : "gray",
-                }}
-              >
-                p
-              </span>
-              <span>{c.user === username ? "Me" : c.user}</span>: {c.msg}
-            </div>
-          ))
-        ) : (
-          <div>No chat messages</div>
-        )}
-      </div>
-      <ChatInputs />
-    </>
+    <Box overflowY="auto" h="500px">
+      {chat.length ? (
+        chat.map((c) => (
+          <div key={`msg_${nanoid()}`}>
+            <span
+              style={{
+                width: "0.5rem",
+                height: "0.5rem",
+                borderRadius: "50%",
+                background: connected ? "green" : "gray",
+              }}
+            >
+              p
+            </span>
+            <span>{c.user === username ? "Me" : c.user}</span>: {c.msg}
+          </div>
+        ))
+      ) : (
+        <div>No chat messages</div>
+      )}
+    </Box>
   );
 }
