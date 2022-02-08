@@ -7,6 +7,7 @@ export default function ChatHeader() {
       boxShadow="0 2px 6px rgba(0, 0, 0, 0.5)"
       padding="1rem"
       m="0"
+      borderRadius="lg"
     >
       Header
     </Box>
