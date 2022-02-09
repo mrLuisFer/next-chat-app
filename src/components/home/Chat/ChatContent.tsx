@@ -27,14 +27,14 @@ export default function ChatContent() {
 
     if (socket) {
       return () => {
-        socket.disconnect();
         setConnected(false);
+        socket.disconnect();
       };
     }
   }, []);
 
   return (
-    <Box overflowY="auto" h="500px">
+    <Box overflowY="auto" h="480px" className="chatContent">
       {chat.length ? (
         chat.map((c) => (
           <div key={`msg_${nanoid()}`}>

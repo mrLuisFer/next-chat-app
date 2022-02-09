@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   padding: 0;
@@ -11,6 +15,18 @@ a {
   text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
+.chatContent::-webkit-scrollbar {
+  width: 10px;
+}
+.chatContent::-webkit-scrollbar-track {
+  background: #1a202c;
+  border-radius: 12px;
+}
+.chatContent::-webkit-scrollbar-thumb {
+  background: rgba(45, 55, 72, 0.6);
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+.chatContent::-webkit-scrollbar-thumb:hover {
+  background: rgba(45, 55, 72, 1);
 }
