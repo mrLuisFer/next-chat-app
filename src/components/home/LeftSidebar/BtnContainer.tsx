@@ -7,6 +7,8 @@ export default function BtnContainer({
   children: any;
   [props: string]: any;
 }) {
+  const boxShadowValue: string = "0px 1px 5px rgba(0, 0, 0, 0.2)";
+
   return (
     <Box
       display="flex"
@@ -17,8 +19,8 @@ export default function BtnContainer({
       gap="0.5rem"
       cursor="pointer"
       userSelect="none"
-      _hover={{ bg: "gray.700" }}
-      _active={{ bg: "gray.600" }}
+      _hover={{ bg: "gray.700", boxShadow: boxShadowValue }}
+      _active={{ bg: "gray.600", boxShadow: boxShadowValue }}
       {...props}
     >
       {children}

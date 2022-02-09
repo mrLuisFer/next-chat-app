@@ -1,6 +1,8 @@
 import { Box } from "@chakra-ui/react";
+import { AiOutlineFileGif } from "react-icons/ai";
+import { BsChatDots } from "react-icons/bs";
 import UserAvatar from "./UserAvatar";
-import GifsBtn from "./GifsBtn";
+import SimpleSidebarBtn from "./SimpleSidebarBtn";
 
 export default function LeftSidebar() {
   return (
@@ -13,7 +15,8 @@ export default function LeftSidebar() {
     >
       <Box display="flex" flexDirection="column" gap="1rem">
         <UserAvatar />
-        <GifsBtn />
+        <SimpleSidebarBtn to="/" text="Chat" Icon={BsChatDots} />
+        <SimpleSidebarBtn to="/gifs" text="Gifs" Icon={AiOutlineFileGif} />
       </Box>
       <Box></Box>
     </Box>
