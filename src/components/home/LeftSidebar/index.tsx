@@ -1,9 +1,8 @@
-import { Box, Heading } from "@chakra-ui/react";
-import { useUserContext } from "context/UserContext";
+import { Box } from "@chakra-ui/react";
+import UserAvatar from "./UserAvatar";
+import GifsBtn from "./GifsBtn";
 
 export default function LeftSidebar() {
-  const { username } = useUserContext();
-
   return (
     <Box
       bg="gray.800"
@@ -12,11 +11,11 @@ export default function LeftSidebar() {
       p="1rem"
       borderRadius="0 10px 10px 0"
     >
-      <Box>
-        <Heading as="h1" fontSize="md">
-          {username}
-        </Heading>
+      <Box display="flex" flexDirection="column" gap="1rem">
+        <UserAvatar />
+        <GifsBtn />
       </Box>
+      <Box></Box>
     </Box>
   );
 }
