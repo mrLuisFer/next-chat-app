@@ -1,11 +1,11 @@
-import {Box} from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import type { IMsg } from "types/IMsg";
 
 interface UserMessageProps {
 	msg: IMsg
 }
 
-export default function UserMessage({msg}: UserMessageProps) {
+export default function UserMessage({ msg }: UserMessageProps) {
 	return (
 		<Box>
 			<li>
