@@ -5,6 +5,7 @@ import { useChatCtx } from "context/ChatContext";
 import type { IMsg } from "types/IMsg";
 import { useUserContext } from "context/UserContext";
 import { Box } from "@chakra-ui/react";
+import UserMessage from './UserMessage'
 
 export default function ChatContent() {
   const { chat, setChat } = useChatCtx();
@@ -22,7 +23,7 @@ export default function ChatContent() {
     });
 
     socket.on("message", (message: IMsg) => {
-      setChat((c) => [...c, message]);
+      setChat((c: IMsg[]) => [...c, message]);
     });
 
     if (socket) {
@@ -36,20 +37,8 @@ export default function ChatContent() {
   return (
     <Box overflowY="auto" h="480px" className="chatContent">
       {chat.length ? (
-        chat.map((c) => (
-          <div key={`msg_${nanoid()}`}>
-            <span
-              style={{
-                width: "0.5rem",
-                height: "0.5rem",
-                borderRadius: "50%",
-                background: connected ? "green" : "gray",
-              }}
-            >
-              p
-            </span>
-            <span>{c.user === username ? "Me" : c.user}</span>: {c.msg}
-          </div>
+        chat.map((msg) => (
+          <UserMessage key={nanoid()} msg={msg} />
         ))
       ) : (
         <div>No chat messages</div>
