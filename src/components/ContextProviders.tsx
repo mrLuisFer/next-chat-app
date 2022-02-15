@@ -11,12 +11,10 @@ const theme = extendTheme({
 
 export default function ContextProviders({ children }: { children: any }) {
   return (
-    <>
-      <ChakraProvider theme={theme}>
-        <ChatContextProvider>
-          <UserContextProvider>{children}</UserContextProvider>
-        </ChatContextProvider>
-      </ChakraProvider>
-    </>
+    <ChakraProvider theme={theme}>
+      <ChatContextProvider>
+        <UserContextProvider>{children}</UserContextProvider>
+      </ChatContextProvider>
+    </ChakraProvider>
   );
 }
