@@ -14,11 +14,11 @@ interface IUserCtx {
   setUsername: Dispatch<SetStateAction<string>>;
 }
 
-const user: string = `User@${nanoid()}`;
+// const user: string = `User@${nanoid()}`;
 const userInitialValue: IUserCtx = {
   connected: false,
   setConnected: (b) => b,
-  username: user,
+  username: '',
   setUsername: (s) => s,
 };
 
@@ -26,7 +26,7 @@ export const UserCtx = createContext(userInitialValue);
 
 export default function UserCtxProvider({ children }: { children: any }) {
   const [connected, setConnected] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>(user);
+  const [username, setUsername] = useState<string>('');
 
   return (
     <UserCtx.Provider
