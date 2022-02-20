@@ -7,7 +7,7 @@ const googleAuthProvider = firebase.auth.GoogleAuthProvider.PROVIDER_ID
 
 const uiConfig = {
 	signInSuccessUrl: '/',
-	signInOptions: [emailAuthProvider, googleAuthProvider],
+	signInOptions: [{ provider: emailAuthProvider, requireDisplayName: true }, googleAuthProvider],
 }
 
 const Login: NextPage = () => {
