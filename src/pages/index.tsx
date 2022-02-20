@@ -1,12 +1,15 @@
 import type { NextPage } from "next";
 import Chat from "components/home/Chat";
-import { useAuth } from "hooks/useAuth"
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { firebase } from 'lib/Firebase'
 
 const Home: NextPage = () => {
-  const { authorized } = useAuth()
+  const auth: any = firebase.auth()
+  const [user, loading, error] = useAuthState(auth)
 
+  console.log(loading, user, error)
   return (
-    <>{authorized && <Chat />}</>
+    <Chat />
   )
 };
 
