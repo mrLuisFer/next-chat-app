@@ -1,8 +1,16 @@
 import type { NextPage } from "next";
 import { Box } from "@chakra-ui/react";
+import { useAuth } from "hooks/useAuth"
 
 const Gifs: NextPage = () => {
-  return <Box>Hello</Box>;
+  const { authorized } = useAuth()
+
+  return (
+    <>
+      {authorized && <Box>Hello</Box>}
+    </>
+  )
+
 };
 
 export default Gifs;
