@@ -9,11 +9,11 @@ import { useRouter } from 'next/router'
 
 const Home: NextPage = () => {
 
+  const router = useRouter()
   // Move into User Context file
   const auth: any = firebase.auth()
   const [user, loading, error] = useAuthState(auth)
   const { setUsername, setAvatar, setUserId } = useUserContext()
-  const router = useRouter()
 
   console.log(loading, user, error)
 
