@@ -20,7 +20,7 @@ function App({ Component, pageProps }: AppProps) {
     <ContextProviders>
       <Grid
         width="100vw"
-        gridTemplateColumns="250px 1fr"
+        gridTemplateColumns={atLoginPath ? "1fr" : "250px 1fr"}
         color="white"
         gridGap="10px"
       >
