@@ -33,7 +33,7 @@ export default function ChatInputs() {
   };
 
   return (
-    <Box position="fixed" bottom="3rem" w="100%" h="min-content">
+    <Box position="fixed" bottom="2rem" w="100%" h="min-content">
       <Box as="form" onSubmit={(e: any) => handleSendMessage(e)}>
         <FormControl display="flex" gap="1rem" alignItems="center">
           <Input
