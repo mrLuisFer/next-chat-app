@@ -35,7 +35,7 @@ export default function ChatContent() {
   }, []);
 
   return (
-    <Box overflowY="auto" h="480px" className="chatContent">
+    <Box overflowY="auto" h="460px" className="chatContent">
       {chat.length ? (
         chat.map((msg) => (
           <UserMessage key={nanoid()} msg={msg} />
