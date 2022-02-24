@@ -9,4 +9,5 @@ export interface IUserCtx {
 	setUserId: Dispatch<SetStateAction<string>>
 	userLoading: boolean
 	setUserLoading: Dispatch<SetStateAction<boolean>>
+	userError: any
 }

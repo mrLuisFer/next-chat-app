@@ -21,7 +21,8 @@ const userInitialValue: IUserCtx = {
   userId: '',
   setUserId: (s) => s,
   userLoading: false,
-  setUserLoading: (s) => s
+  setUserLoading: (s) => s,
+  userError: ''
 };
 
 export const UserCtx = createContext(userInitialValue);
@@ -53,7 +54,19 @@ export default function UserCtxProvider({ children }: { children: any }) {
 
   return (
     <UserCtx.Provider
-      value={{ connected, setConnected, username, setUsername, avatar, setAvatar, userId, setUserId, setUserLoading, userLoading }}
+      value={{
+        connected,
+        setConnected,
+        username,
+        setUsername,
+        avatar,
+        setAvatar,
+        userId,
+        setUserId,
+        setUserLoading,
+        userLoading,
+        userError
+      }}
     >
       {children}
     </UserCtx.Provider>
