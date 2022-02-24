@@ -9,16 +9,16 @@ interface IUseAuth {
 
 export const useAuth = (): IUseAuth => {
 	const [authorized, setAuthorized] = useState<boolean>(false)
-	const { username } = useUserContext()
+	const { username, userError } = useUserContext()
 	const router = useRouter()
 
 	useEffect(() => {
 		console.log(`${username.length} ${authorized}`)
-		if (username.length > 2) {
-			setAuthorized(true)
-		} else {
+		if (userError && userError !== null) {
 			router.push('/login')
+			return
 		}
+		setAuthorized(true)
 	}, [])
 
 	return {
