@@ -11,17 +11,14 @@ export default function GifsUi() {
   const [gifsError, setGifsError] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const getGifs = useCallback(
-    async (giphyUrl: string) => {
-      setLoading(true)
-      const response: Response = await fetch(giphyUrl)
-      const data = await response.json()
-      if (data.data.length > 0) setGifsData(data.data)
-      else setGifsError(true)
-      setLoading(false)
-    },
-    [gifsQuery]
-  )
+  const getGifs = useCallback(async (giphyUrl: string) => {
+    setLoading(true)
+    const response: Response = await fetch(giphyUrl)
+    const data = await response.json()
+    if (data.data.length > 0) setGifsData(data.data)
+    else setGifsError(true)
+    setLoading(false)
+  }, [])
 
   useEffect(() => {
     const giphyUrl: string = `https://api.giphy.com/v1/gifs/search?api_key=p581czEQruojaMLjQ2dODC8vZ3UsSZRL&q=${gifsQuery}&limit=25&offset=0&rating=g&lang=en`
