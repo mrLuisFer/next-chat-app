@@ -1,13 +1,13 @@
-import Link from "next/link";
-import BtnContainer from "./BtnContainer";
-import { Text } from "@chakra-ui/react";
-import { IconType } from "react-icons";
-import { nanoid } from "nanoid";
+import Link from "next/link"
+import BtnContainer from "./BtnContainer"
+import { Text } from "@chakra-ui/react"
+import { IconType } from "react-icons"
+import { nanoid } from "nanoid"
 
 interface SidebarBtnProps {
-  to: string;
-  text: string;
-  Icon: IconType;
+  to: string
+  text: string
+  Icon: IconType
 }
 
 export default function SimpleSidebarBtn({ to, text, Icon }: SidebarBtnProps) {
@@ -20,5 +20,5 @@ export default function SimpleSidebarBtn({ to, text, Icon }: SidebarBtnProps) {
         </BtnContainer>
       </a>
     </Link>
-  );
+  )
 }

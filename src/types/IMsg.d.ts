@@ -1,4 +1,4 @@
 export interface IMsg {
-  user: string;
-  msg: string;
+  user: string
+  msg: string
 }

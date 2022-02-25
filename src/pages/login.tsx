@@ -1,22 +1,22 @@
-import type { NextPage } from "next";
-import { firebase } from 'lib/Firebase'
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import type { NextPage } from "next"
+import { firebase } from "lib/Firebase"
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 
 const emailAuthProvider = firebase.auth.EmailAuthProvider.PROVIDER_ID
 const googleAuthProvider = firebase.auth.GoogleAuthProvider.PROVIDER_ID
 
 const uiConfig = {
-	signInSuccessUrl: '/',
-	signInOptions: [{ provider: emailAuthProvider, requireDisplayName: true }, googleAuthProvider],
+  signInSuccessUrl: "/",
+  signInOptions: [{ provider: emailAuthProvider, requireDisplayName: true }, googleAuthProvider],
 }
 
 const Login: NextPage = () => {
-	return (
-		<div>
-			<p>Login</p>
-			<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-		</div>
-	);
-};
+  return (
+    <div>
+      <p>Login</p>
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+    </div>
+  )
+}
 
-export default Login;
+export default Login

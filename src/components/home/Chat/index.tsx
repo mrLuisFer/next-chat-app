@@ -1,7 +1,7 @@
-import ChatInputs from "./ChatInputs";
-import { Box } from "@chakra-ui/react";
-import ChatContent from "./ChatContent";
-import ChatHeader from "./ChatHeader";
+import ChatInputs from "./ChatInputs"
+import { Box } from "@chakra-ui/react"
+import ChatContent from "./ChatContent"
+import ChatHeader from "./ChatHeader"
 
 export default function Chat() {
   return (
@@ -10,5 +10,5 @@ export default function Chat() {
       <ChatContent />
       <ChatInputs />
     </Box>
-  );
+  )
 }

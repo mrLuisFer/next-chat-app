@@ -1,13 +1,7 @@
-import { Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react"
 
-export default function BtnContainer({
-  children,
-  ...props
-}: {
-  children: any;
-  [props: string]: any;
-}) {
-  const boxShadowValue: string = "0px 1px 5px rgba(0, 0, 0, 0.2)";
+export default function BtnContainer({ children, ...props }: { children: any; [props: string]: any }) {
+  const boxShadowValue: string = "0px 1px 5px rgba(0, 0, 0, 0.2)"
 
   return (
     <Box
@@ -25,5 +19,5 @@ export default function BtnContainer({
     >
       {children}
     </Box>
-  );
+  )
 }
