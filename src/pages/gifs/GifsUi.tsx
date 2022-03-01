@@ -5,7 +5,6 @@ import GifsContent from "components/gifs/GifsContent"
 import Layout from "components/common/Layout"
 
 /*const apiKey = process.env.GIPHY_KEY*/
-
 export default function GifsUi() {
   const [gifsQuery, setGifsQuery] = useState<string>("")
   const [gifsData, setGifsData] = useState([])

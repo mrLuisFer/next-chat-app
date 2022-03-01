@@ -14,11 +14,12 @@ export const useAuth = (): IUseAuth => {
 
   useEffect(() => {
     console.log(`${username.length} ${authorized}`)
-    if (userError && userError !== null) {
+    if (userError || userError !== null) {
+      setAuthorized(false)
       router.push("/login")
-      return
-    }
+    } else {
     setAuthorized(true)
+    }
   }, [])
 
   return {
