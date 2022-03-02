@@ -30,6 +30,8 @@ export default function SingleGif({ gif }: { gif: any }) {
         alt={gif.title}
         alignItems="center"
         borderRadius="10px"
+        onMouseEnter={() => setIsHoverGif(true)}
+        onMouseLeave={() => setIsHoverGif(false)}
       />
     </Box>
   )
