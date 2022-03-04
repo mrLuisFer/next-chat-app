@@ -3,10 +3,13 @@ import { IMsg } from "types/IMsg"
 import { useUserContext } from "context/UserContext"
 import { Box, FormControl, Input, Button } from "@chakra-ui/react"
 import { AiOutlineSend, AiOutlineGif } from "react-icons/ai"
+import { useGetGifValue } from "context/GifValueContext"
 
 export default function ChatInputs() {
   const [msg, setMsg] = useState<string>("")
+  const [showGifsPanel, setShowGifsPanel] = useState<boolean>(false)
   const { connected, username } = useUserContext()
+  const { gifValue } = useGetGifValue()
   const inputRef: any = useRef(null)
 
   const handleSendMessage = async (e: FormEvent<HTMLFormElement>) => {
@@ -34,7 +37,7 @@ export default function ChatInputs() {
 
   return (
     <Box position="fixed" bottom="2rem" w="100%" h="min-content">
-      <Box as="form" onSubmit={(e: any) => handleSendMessage(e)}>
+      <Box as="form" position="relative" onSubmit={(e: any) => handleSendMessage(e)}>
         <FormControl display="flex" gap="1rem" alignItems="center">
           <Input
             disabled={!connected}
@@ -45,13 +48,18 @@ export default function ChatInputs() {
             value={msg}
             w="450px"
           />
-          <Button type="button">
+          <Button type="button" onClick={() => setShowGifsPanel(true)}>
             <AiOutlineGif size="1.5rem" />
           </Button>
           <Button type="submit" disabled={!connected}>
             <AiOutlineSend size="1.2rem" />
           </Button>
         </FormControl>
+        {showGifsPanel && (
+          <Box position="absolute" top="0">
+            {gifValue}
+          </Box>
+        )}
       </Box>
     </Box>
   )
