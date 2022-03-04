@@ -4,7 +4,7 @@ import type { AppProps } from "next/app"
 import { useRouter } from "next/router"
 import { Grid, Box } from "@chakra-ui/react"
 import ContextProviders from "components/ContextProviders"
-import LeftSidebar from "components/home/LeftSidebar"
+import LeftSidebar from "components/common/LeftSidebar"
 
 function App({ Component, pageProps }: AppProps) {
   const [pathUrl, setPathUrl] = useState<string>("")
