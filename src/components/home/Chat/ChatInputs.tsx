@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useRef, useState } from "react"
 import { IMsg } from "types/IMsg"
 import { useUserContext } from "context/UserContext"
 import { Box, FormControl, Input, Button } from "@chakra-ui/react"
-import { AiOutlineSend } from "react-icons/ai"
+import { AiOutlineSend, AiOutlineGif } from "react-icons/ai"
 
 export default function ChatInputs() {
   const [msg, setMsg] = useState<string>("")
@@ -45,8 +45,11 @@ export default function ChatInputs() {
             value={msg}
             w="450px"
           />
-          <Button disabled={!connected}>
-            <AiOutlineSend />
+          <Button type="button">
+            <AiOutlineGif size="1.5rem" />
+          </Button>
+          <Button type="submit" disabled={!connected}>
+            <AiOutlineSend size="1.2rem" />
           </Button>
         </FormControl>
       </Box>
