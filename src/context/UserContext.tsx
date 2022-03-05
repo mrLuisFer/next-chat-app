@@ -43,6 +43,7 @@ export default function UserCtxProvider({ children }: { children: any }) {
       setAvatar(avatar)
       setUserId(id)
       setUserLoading(loading)
+      console.log(user)
       if (error) setUserError(error)
     }
   }, [user, loading, error])

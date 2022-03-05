@@ -1,4 +1,4 @@
-import { Box, Heading, Image as ChakraImg } from "@chakra-ui/react"
+import { Heading, Image as ChakraImg } from "@chakra-ui/react"
 import Link from "next/link"
 import BtnContainer from "./BtnContainer"
 import { useUserContext } from "context/UserContext"
