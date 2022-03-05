@@ -2,8 +2,8 @@ import { ChangeEvent, FormEvent, useRef, useState } from "react"
 import { IMsg } from "types/IMsg"
 import { useUserContext } from "context/UserContext"
 import { Box, FormControl, Input, Button } from "@chakra-ui/react"
-import { AiOutlineSend, AiOutlineGif } from "react-icons/ai"
 import { useGetGifValue } from "context/GifValueContext"
+import ChatActions from "./ChatActions"
 
 export default function ChatInputs() {
   const [msg, setMsg] = useState<string>("")
@@ -48,17 +48,20 @@ export default function ChatInputs() {
             value={msg}
             w="450px"
           />
-          <Button type="button" onClick={() => setShowGifsPanel(true)}>
-            <AiOutlineGif size="1.5rem" />
-          </Button>
-          <Button type="submit" disabled={!connected}>
-            <AiOutlineSend size="1.2rem" />
-          </Button>
+          <ChatActions connected={connected} setShowGifsPanel={setShowGifsPanel} />
         </FormControl>
         {showGifsPanel && (
-          <Box position="absolute" top="0">
-            {gifValue}
-          </Box>
+          <>
+            {gifValue.length > 0 ? (
+              <Box position="absolute" top="0">
+                {gifValue}
+              </Box>
+            ) : (
+              <Box position="absolute" top="0">
+                Gifs
+              </Box>
+            )}
+          </>
         )}
       </Box>
     </Box>
