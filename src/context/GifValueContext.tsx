@@ -26,4 +26,3 @@ export const useGetGifValue = (): IGifValue => {
     return { gifValue, setGifValue }
   }
 }
-

@@ -18,7 +18,7 @@ export const useAuth = (): IUseAuth => {
       setAuthorized(false)
       router.push("/login")
     } else {
-    setAuthorized(true)
+      setAuthorized(true)
     }
   }, [])
 
