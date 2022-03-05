@@ -6,15 +6,15 @@ import type { IUserCtx } from "types/IUserContext"
 // const user: string = `User@${nanoid()}`;
 const userInitialValue: IUserCtx = {
   connected: false,
-  setConnected: (b) => b,
+  setConnected: (b: boolean) => b,
   username: "",
-  setUsername: (s) => s,
+  setUsername: (s: string) => s,
   avatar: "",
-  setAvatar: (s) => s,
+  setAvatar: (s: string) => s,
   userId: "",
-  setUserId: (s) => s,
+  setUserId: (s: string) => s,
   userLoading: false,
-  setUserLoading: (s) => s,
+  setUserLoading: (s: boolean) => s,
   userError: "",
 }
 
@@ -45,7 +45,7 @@ export default function UserCtxProvider({ children }: { children: any }) {
       setUserLoading(loading)
       if (error) setUserError(error)
     }
-  }, [user])
+  }, [user, loading, error])
 
   return (
     <UserCtx.Provider
