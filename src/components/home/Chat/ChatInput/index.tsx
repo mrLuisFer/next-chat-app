@@ -19,7 +19,6 @@ export default function ChatInputs() {
         user: username,
         msg,
       }
-
       const resp: Response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -31,7 +30,6 @@ export default function ChatInputs() {
       if (resp.ok) setMsg("")
       console.log(msg)
     }
-
     inputRef?.current?.focus()
   }
 
