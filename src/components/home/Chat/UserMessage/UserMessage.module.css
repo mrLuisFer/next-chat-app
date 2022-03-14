@@ -1,0 +1,7 @@
+.connected::after {
+  content: "";
+  background-color: green;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+}
