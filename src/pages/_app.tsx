@@ -14,7 +14,7 @@ function App({ Component, pageProps }: AppProps) {
     setPathUrl(router.pathname)
   }, [router])
 
-  const atLoginPath: boolean = pathUrl === "/login"
+  const atLoginPath: boolean = pathUrl === "/"
 
   return (
     <ContextProviders>

@@ -1,12 +1,22 @@
 import type { NextPage } from "next"
-import { Spinner } from "@chakra-ui/react"
-import { useUserContext } from "context/UserContext"
-import Chat from "components/home/Chat"
+import { firebase } from "lib/Firebase"
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 
-const Home: NextPage = () => {
-  const { userLoading } = useUserContext()
+const emailAuthProvider = firebase.auth.EmailAuthProvider.PROVIDER_ID
+const googleAuthProvider = firebase.auth.GoogleAuthProvider.PROVIDER_ID
 
-  return <>{userLoading ? <Spinner size="xl" speed="0.65s" thickness="3px" /> : <Chat />}</>
+const uiConfig = {
+  signInSuccessUrl: "/chat",
+  signInOptions: [{ provider: emailAuthProvider, requireDisplayName: true }, googleAuthProvider],
 }
 
-export default Home
+const Login: NextPage = () => {
+  return (
+    <div>
+      <p>Login</p>
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+    </div>
+  )
+}
+
+export default Login
