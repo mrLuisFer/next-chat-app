@@ -4,6 +4,7 @@ import { BsChatDots } from "react-icons/bs"
 import UserAvatar from "./UserAvatar"
 import SimpleSidebarBtn from "./SimpleSidebarBtn"
 import SettingsBtn from "./SettingsBtn"
+import { MdDraw } from "react-icons/md"
 
 export default function LeftSidebar() {
   return (
@@ -23,6 +24,7 @@ export default function LeftSidebar() {
           <UserAvatar />
           <SimpleSidebarBtn to="/chat" text="Chat" Icon={BsChatDots} />
           <SimpleSidebarBtn to="/gifs" text="Gifs" Icon={AiOutlineFileGif} />
+          <SimpleSidebarBtn to="/draw" text="Draw" Icon={MdDraw} />
         </Box>
         <Box>
           <SettingsBtn />
