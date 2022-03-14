@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react"
 import { IMsg } from "types/IMsg"
 import { useUserContext } from "context/UserContext"
-import { Box, FormControl, Input, Button } from "@chakra-ui/react"
+import { Box, FormControl, Input, Textarea } from "@chakra-ui/react"
 import { useGetGifValue } from "context/GifValueContext"
 import ChatActions from "./ChatActions"
 
@@ -12,9 +12,13 @@ export default function ChatInputs() {
   const { gifValue } = useGetGifValue()
   const inputRef: any = useRef(null)
 
-  const handleSendMessage = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (msg) {
+  const handleChangeMsg = (e: any) => {
+    const value: string = e.target.value
+    setMsg(value)
+  }
+
+  const sendMsg = async () => {
+    if (msg && msg.length > 1) {
       const message: IMsg = {
         user: username,
         msg,
@@ -26,25 +30,38 @@ export default function ChatInputs() {
         },
         body: JSON.stringify(message),
       })
-
       if (resp.ok) setMsg("")
       console.log(msg)
     }
     inputRef?.current?.focus()
   }
 
+  const handleSendMessage = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    sendMsg()
+  }
+
+  const handleEnterKeyDown = (e: any) => {
+    console.log(e.keyCode)
+    if (e.keyCode === 13 && e.code === "Enter") {
+      sendMsg()
+    }
+  }
+
   return (
     <Box position="fixed" bottom="2rem" w="100%" h="min-content">
       <Box as="form" position="relative" onSubmit={(e: any) => handleSendMessage(e)}>
         <FormControl display="flex" gap="1rem" alignItems="center">
-          <Input
+          <Textarea
             disabled={!connected}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setMsg(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => handleChangeMsg(e)}
             placeholder={connected ? "Type a message..." : "Connecting..."}
             ref={inputRef}
-            type="text"
             value={msg}
             w="450px"
+            resize="none"
+            isFullWidth
+            onKeyDown={(e) => handleEnterKeyDown(e)}
           />
           <ChatActions connected={connected} setShowGifsPanel={setShowGifsPanel} />
         </FormControl>

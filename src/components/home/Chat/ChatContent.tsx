@@ -4,12 +4,12 @@ import { nanoid } from "nanoid"
 import { useChatCtx } from "context/ChatContext"
 import type { IMsg } from "types/IMsg"
 import { useUserContext } from "context/UserContext"
-import { Box } from "@chakra-ui/react"
+import { Box, UnorderedList } from "@chakra-ui/react"
 import UserMessage from "./UserMessage"
 
 export default function ChatContent() {
   const { chat, setChat } = useChatCtx()
-  const { connected, setConnected, username } = useUserContext()
+  const { setConnected } = useUserContext()
 
   useEffect((): any => {
     const baseUrl: string = process.env.BASE_URL!
@@ -36,7 +36,9 @@ export default function ChatContent() {
 
   return (
     <Box overflowY="auto" h="460px" className="chatContent">
-      {chat.length ? chat.map((msg) => <UserMessage key={nanoid()} msg={msg} />) : <div>No chat messages</div>}
+      <UnorderedList styleType="none" display="flex" flexDirection="column" gap="1rem 0" margin="0">
+        {chat.length ? chat.map((msg) => <UserMessage key={nanoid()} msg={msg} />) : <div>No chat messages</div>}
+      </UnorderedList>
     </Box>
   )
 }
