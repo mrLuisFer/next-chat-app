@@ -21,7 +21,7 @@ export default function LeftSidebar() {
       >
         <Box display="flex" flexDirection="column" gap="1rem">
           <UserAvatar />
-          <SimpleSidebarBtn to="/" text="Chat" Icon={BsChatDots} />
+          <SimpleSidebarBtn to="/chat" text="Chat" Icon={BsChatDots} />
           <SimpleSidebarBtn to="/gifs" text="Gifs" Icon={AiOutlineFileGif} />
         </Box>
         <Box>
