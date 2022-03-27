@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react"
 import { IMsg } from "types/IMsg"
 import { useUserContext } from "context/UserContext"
-import { Box, FormControl, Input, Textarea } from "@chakra-ui/react"
+import { Box, FormControl, Input } from "@chakra-ui/react"
 import { useGetGifValue } from "context/GifValueContext"
 import ChatActions from "./ChatActions"
 
@@ -41,27 +41,18 @@ export default function ChatInputs() {
     sendMsg()
   }
 
-  const handleEnterKeyDown = (e: any) => {
-    console.log(e.keyCode)
-    if (e.keyCode === 13 && e.code === "Enter") {
-      sendMsg()
-    }
-  }
-
   return (
     <Box position="fixed" bottom="2rem" w="100%" h="min-content">
       <Box as="form" position="relative" onSubmit={(e: any) => handleSendMessage(e)}>
         <FormControl display="flex" gap="1rem" alignItems="center">
-          <Textarea
+          <Input
             disabled={!connected}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => handleChangeMsg(e)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeMsg(e)}
             placeholder={connected ? "Type a message..." : "Connecting..."}
             ref={inputRef}
             value={msg}
             w="450px"
             resize="none"
-            isFullWidth
-            onKeyDown={(e) => handleEnterKeyDown(e)}
           />
           <ChatActions connected={connected} setShowGifsPanel={setShowGifsPanel} />
         </FormControl>
