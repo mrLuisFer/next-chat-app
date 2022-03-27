@@ -7,12 +7,9 @@ const chatHandler = (req: NextApiRequest, res: NextApiResponseIo) => {
     return res.status(200).json({ msg: "Method should be POST" })
   }
 
-  if (method === "POST") {
-    const msg = req.body
-    res.socket.server.io.emit("message", msg)
-
-    return res.status(200).json(msg)
-  }
+  const msg = req.body
+  res.socket.server.io.emit("message", msg)
+  return res.status(200).json(msg)
 }
 
 export default chatHandler
