@@ -5,7 +5,6 @@ import Chat from "components/home/Chat"
 
 const Home: NextPage = () => {
   const { userLoading } = useUserContext()
-
   return <>{userLoading ? <Spinner size="xl" speed="0.65s" thickness="3px" /> : <Chat />}</>
 }
 
