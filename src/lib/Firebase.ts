@@ -1,19 +1,13 @@
 import { getFirestore, Firestore } from "firebase/firestore"
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore'
+import firebase from "firebase/compat/app"
+import "firebase/compat/auth"
+import "firebase/compat/firestore"
+import { firebaseProdConfig } from "./firebase-prod"
+import { firebaseDevConfig } from "./Firebase-dev"
 
-const firebaseConfig = {
-	apiKey: process.env.API_KEY,
-	authDomain: process.env.AUTH_DOMAIN,
-	projectId: process.env.PROJECT_ID,
-	storageBucket: process.env.STORAGE_BUCKET,
-	messagingSenderId: process.env.MESSAGING_SENDER_ID,
-	appId: process.env.APP_ID,
-}
-
-// Initialize Firebase
-const app: firebase.app.App = firebase.initializeApp(firebaseConfig)
+const nodeProdEnv = process.env.NODE_ENV === "production"
+console.log(process.env.NODE_ENV)
+const app: firebase.app.App = firebase.initializeApp(nodeProdEnv ? firebaseProdConfig : firebaseDevConfig)
 const firestore: Firestore = getFirestore(app)
 
 export { app, firestore, firebase }
