@@ -9,19 +9,20 @@ export const config = {
   },
 }
 
-const socketioHandler = async (req: NextApiRequest, res: NextApiResponseIo) => {
-  console.log(req)
+const socketHandler = async (req: NextApiRequest, res: NextApiResponseIo) => {
   if (!res.socket.server.io) {
     console.log("New Socket.io server...")
-
     const httpServer: HttpServer = res.socket.server as any
     const io = new ServerIO(httpServer, {
-      path: "/api/socketio",
+      path: "/api/socket",
     })
 
     res.socket.server.io = io
+    io.on("connection", (socket) => {
+      console.log(socket)
+    })
   }
   res.end()
 }
 
-export default socketioHandler
+export default socketHandler
