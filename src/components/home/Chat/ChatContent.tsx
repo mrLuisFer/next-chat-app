@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import * as io from "socket.io-client"
 import { nanoid } from "nanoid"
 import { useChatCtx } from "context/ChatContext"
@@ -8,12 +8,6 @@ import { Box, UnorderedList } from "@chakra-ui/react"
 import UserMessage from "./UserMessage"
 
 export default function ChatContent() {
-  const [localSocket, setLocalSocket] = useState<any>(() => {
-    if (typeof window !== "undefined") {
-      return window.localStorage.getItem("socketId")
-    }
-    return ""
-  })
   const { chat, setChat } = useChatCtx()
   const { setConnected } = useUserContext()
 
@@ -23,7 +17,6 @@ export default function ChatContent() {
   })
   useEffect((): any => {
     socket.on("connect", () => {
-      window.localStorage.setItem("socketId", socket.id)
       console.log("SOCKET CONNECTED!", socket.id)
       setConnected(true)
     })
