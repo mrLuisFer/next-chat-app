@@ -1,59 +1,54 @@
-import { ChangeEvent, FormEvent, useRef, useState } from "react"
-import { IMsg } from "types/IMsg"
-import { useUserContext } from "context/UserContext"
-import { Box, FormControl, Input } from "@chakra-ui/react"
-import { useGetGifValue } from "context/GifValueContext"
+import { useState, Dispatch, SetStateAction } from "react"
+import { Box, FormControl } from "@chakra-ui/react"
 import ChatActions from "./ChatActions"
+import { useGetGifValue } from "context/GifValueContext"
 
-export default function ChatInputs() {
-  const [msg, setMsg] = useState<string>("")
-  const [showGifsPanel, setShowGifsPanel] = useState<boolean>(false)
-  const { connected, username } = useUserContext()
+interface ChatInputsProps {
+  inputBox: any
+  messageText: string
+  channel: any
+  setMessageText: Dispatch<SetStateAction<string>>
+}
+
+export default function ChatInputs({ inputBox, messageText, channel, setMessageText }: ChatInputsProps) {
   const { gifValue } = useGetGifValue()
-  const inputRef: any = useRef(null)
+  const [showGifsPanel, setShowGifsPanel] = useState(false)
+  const [connected, setConnected] = useState(false)
 
-  const handleChangeMsg = (e: any) => {
-    const value: string = e.target.value
-    setMsg(value)
+  const messageTextIsEmpty = messageText.trim().length === 0
+
+  const sendChatMessage = (messageText: string) => {
+    channel.publish({ name: "chat-message", data: messageText })
+    setMessageText("")
+    inputBox.focus()
   }
 
-  const sendMsg = async () => {
-    if (msg && msg.length > 1) {
-      const message: IMsg = {
-        user: username,
-        msg,
-      }
-      const resp: Response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(message),
-      })
-      if (resp.ok) setMsg("")
-      console.log(msg)
+  const handleFormSubmission = (event: any) => {
+    event.preventDefault()
+    sendChatMessage(messageText)
+  }
+
+  const handleKeyPress = (event: any) => {
+    if (event.charCode !== 13 || messageTextIsEmpty) {
+      return
     }
-    inputRef?.current?.focus()
-  }
-
-  const handleSendMessage = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    sendMsg()
+    sendChatMessage(messageText)
+    event.preventDefault()
   }
 
   return (
     <Box position="fixed" bottom="2rem" w="100%" h="min-content">
-      <Box as="form" position="relative" onSubmit={(e: any) => handleSendMessage(e)}>
+      <Box as="form" position="relative" onSubmit={handleFormSubmission}>
         <FormControl display="flex" gap="1rem" alignItems="center">
-          <Input
-            disabled={!connected}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeMsg(e)}
-            placeholder={connected ? "Type a message..." : "Connecting..."}
-            ref={inputRef}
-            value={msg}
-            w="450px"
-            resize="none"
-          />
+          <textarea
+            ref={(element) => {
+              inputBox = element
+            }}
+            value={messageText}
+            placeholder="Type a message..."
+            onChange={(e) => setMessageText(e.target.value)}
+            onKeyPress={handleKeyPress}
+          ></textarea>
           <ChatActions connected={connected} setShowGifsPanel={setShowGifsPanel} />
         </FormControl>
         {showGifsPanel && (

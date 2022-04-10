@@ -10,7 +10,7 @@ interface ChatActionsProps {
 export default function ChatActions({ setShowGifsPanel, connected }: ChatActionsProps) {
   return (
     <>
-      <Button type="button" onClick={() => setShowGifsPanel((prevState) => !prevState)}>
+      <Button type="submit" onClick={() => setShowGifsPanel((prevState) => !prevState)}>
         <AiOutlineGif size="1.5rem" />
       </Button>
       <Button type="submit" disabled={!connected}>
