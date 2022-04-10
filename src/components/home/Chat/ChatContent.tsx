@@ -21,7 +21,7 @@ export default function ChatContent() {
       setConnected(true)
     })
 
-    socket.on("message", (message: IMsg) => {
+    socket.on("chat-message", (message: IMsg) => {
       setChat((c: IMsg[]) => [...c, message])
     })
 
