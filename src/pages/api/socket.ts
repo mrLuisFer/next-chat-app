@@ -2,7 +2,6 @@ import type { NextApiRequest } from "next"
 import { Server as ServerIO } from "socket.io"
 import { Server as HttpServer } from "http"
 import type { NextApiResponseIo } from "types/NextApiResponse"
-import { nanoid } from "nanoid"
 
 export const config = {
   api: {

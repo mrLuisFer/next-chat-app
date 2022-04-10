@@ -1,6 +1,4 @@
 import { createContext, Dispatch, SetStateAction, useContext, useState, useEffect } from "react"
-import { useAuthState } from "react-firebase-hooks/auth"
-import { firebase } from "lib/Firebase"
 import type { IUserCtx } from "types/IUserContext"
 
 // const user: string = `User@${nanoid()}`;
@@ -29,24 +27,6 @@ export default function UserCtxProvider({ children }: { children: any }) {
   const [userId, setUserId] = useState<string>("")
   const [userLoading, setUserLoading] = useState<boolean>(false)
   const [userError, setUserError] = useState<any>(null)
-
-  const auth: any = firebase.auth()
-  const [user, loading, error] = useAuthState(auth)
-
-  useEffect(() => {
-    if (user) {
-      const username: string = user?.displayName as string
-      const avatar: string = user?.photoURL as string
-      const id: string = user?.uid as string
-
-      setUsername(username)
-      setAvatar(avatar)
-      setUserId(id)
-      setUserLoading(loading)
-      console.log(user)
-      if (error) setUserError(error)
-    }
-  }, [user, loading, error])
 
   return (
     <UserCtx.Provider
