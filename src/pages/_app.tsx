@@ -6,7 +6,7 @@ import { Grid, Box } from "@chakra-ui/react"
 import ContextProviders from "components/ContextProviders"
 import LeftSidebar from "components/common/LeftSidebar"
 
-function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   const [pathUrl, setPathUrl] = useState<string>("")
   const router = useRouter()
 
