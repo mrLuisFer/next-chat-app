@@ -1,6 +1,6 @@
 {
-  "name": "next-chat-app",
-  "private": true,
+  "name": "client",
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
