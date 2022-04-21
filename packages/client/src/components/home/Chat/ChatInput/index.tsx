@@ -1,5 +1,5 @@
 import { useState, Dispatch, SetStateAction } from "react"
-import { Box, FormControl } from "@chakra-ui/react"
+import { Box, FormControl, Input } from "@chakra-ui/react"
 import ChatActions from "./ChatActions"
 import { useGetGifValue } from "context/GifValueContext"
 
@@ -15,8 +15,6 @@ export default function ChatInputs({ inputBox, messageText, channel, setMessageT
   const [showGifsPanel, setShowGifsPanel] = useState(false)
   const [connected, setConnected] = useState(false)
 
-  const messageTextIsEmpty = messageText.trim().length === 0
-
   const sendChatMessage = (messageText: string) => {
     channel.publish({ name: "chat-message", data: messageText })
     setMessageText("")
@@ -28,27 +26,20 @@ export default function ChatInputs({ inputBox, messageText, channel, setMessageT
     sendChatMessage(messageText)
   }
 
-  const handleKeyPress = (event: any) => {
-    if (event.charCode !== 13 || messageTextIsEmpty) {
-      return
-    }
-    sendChatMessage(messageText)
-    event.preventDefault()
-  }
-
   return (
     <Box position="fixed" bottom="2rem" w="100%" h="min-content">
       <Box as="form" position="relative" onSubmit={handleFormSubmission}>
         <FormControl display="flex" gap="1rem" alignItems="center">
-          <textarea
+          <Input
+            w="400px"
+            variant="filled"
             ref={(element) => {
               inputBox = element
             }}
             value={messageText}
             placeholder="Type a message..."
             onChange={(e) => setMessageText(e.target.value)}
-            onKeyPress={handleKeyPress}
-          ></textarea>
+          />
           <ChatActions connected={connected} setShowGifsPanel={setShowGifsPanel} />
         </FormControl>
         {showGifsPanel && (
