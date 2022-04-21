@@ -1,6 +1,6 @@
 import { Box, BoxProps } from "@chakra-ui/react"
 
-interface LayoutProps {
+type LayoutProps = {
   children: any
   [props: string]: BoxProps
 }
@@ -8,7 +8,7 @@ interface LayoutProps {
 export default function Layout({ children, ...props }: LayoutProps) {
   return (
     <Box p="0 2rem 0 0.5rem" {...props}>
-      <>{children}</>
+      {children}
     </Box>
   )
 }

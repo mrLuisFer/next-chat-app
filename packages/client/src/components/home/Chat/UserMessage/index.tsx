@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Box, Img, Text, ListItem } from "@chakra-ui/react"
 import Link from "next/link"
-import type { IMsg } from "types/IMsg"
+import type { IMsg } from "types"
 import { useUserContext } from "context/UserContext"
 import "./UserMessage.module.css"
 

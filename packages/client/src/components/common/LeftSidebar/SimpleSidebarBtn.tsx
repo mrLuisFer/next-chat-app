@@ -4,7 +4,7 @@ import { Text } from "@chakra-ui/react"
 import { IconType } from "react-icons"
 import { nanoid } from "nanoid"
 
-interface SidebarBtnProps {
+type SidebarBtnProps = {
   to: string
   text: string
   Icon: IconType

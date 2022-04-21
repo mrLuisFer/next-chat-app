@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction, useContext, useState } from "react"
-import { IMsg } from "types/IMsg"
+import { IMsg } from "types"
 
 interface IChatState {
   chat: IMsg[]
