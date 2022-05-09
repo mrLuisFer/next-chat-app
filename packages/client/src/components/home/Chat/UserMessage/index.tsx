@@ -6,7 +6,7 @@ import { useUserContext } from "context/UserContext"
 import "./UserMessage.module.css"
 
 interface UserMessageProps {
-  msg: IMsg
+  msg: any
 }
 
 export default function UserMessage({ msg }: UserMessageProps) {
@@ -34,7 +34,7 @@ export default function UserMessage({ msg }: UserMessageProps) {
         </Box>
         <Box marginLeft="0.5rem">
           <Text color="red.100">{msg.user}</Text>
-          <Text as="span">{msg.msg}</Text>
+          <Text as="span">{msg.body}</Text>
         </Box>
       </ListItem>
       {showModal && <Box>User modal</Box>}

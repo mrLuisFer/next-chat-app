@@ -1,24 +1,26 @@
-import { useState, Dispatch, SetStateAction } from "react"
+import { useState, Dispatch, SetStateAction, useRef, RefObject, MutableRefObject } from "react"
 import { Box, FormControl, Input } from "@chakra-ui/react"
-import ChatActions from "./ChatActions"
 import { useGetGifValue } from "context/GifValueContext"
+import { useChat } from "hooks/useChat"
+import { AiOutlineSend, AiOutlineGif } from "react-icons/ai"
+import { Button } from "@chakra-ui/react"
 
 interface ChatInputsProps {
-  inputBox: any
   messageText: string
-  channel: any
   setMessageText: Dispatch<SetStateAction<string>>
+  query: any
 }
 
-export default function ChatInputs({ inputBox, messageText, channel, setMessageText }: ChatInputsProps) {
+export default function ChatInputs({ messageText, setMessageText, query }: ChatInputsProps) {
   const { gifValue } = useGetGifValue()
   const [showGifsPanel, setShowGifsPanel] = useState(false)
-  const [connected, setConnected] = useState(false)
+  const inputBoxRef = useRef<any>()
+  const { sendMessage } = useChat(query)
 
   const sendChatMessage = (messageText: string) => {
-    channel.publish({ name: "chat-message", data: messageText })
+    sendMessage(messageText)
     setMessageText("")
-    inputBox.focus()
+    inputBoxRef?.current?.focus()
   }
 
   const handleFormSubmission = (event: any) => {
@@ -33,14 +35,17 @@ export default function ChatInputs({ inputBox, messageText, channel, setMessageT
           <Input
             w="400px"
             variant="filled"
-            ref={(element) => {
-              inputBox = element
-            }}
+            ref={inputBoxRef}
             value={messageText}
             placeholder="Type a message..."
             onChange={(e) => setMessageText(e.target.value)}
           />
-          <ChatActions connected={connected} setShowGifsPanel={setShowGifsPanel} />
+          <Button type="button" onClick={() => setShowGifsPanel((prevState) => !prevState)}>
+            <AiOutlineGif size="1.5rem" />
+          </Button>
+          <Button type="submit">
+            <AiOutlineSend size="1.2rem" />
+          </Button>
         </FormControl>
         {showGifsPanel && (
           <>
