@@ -11,23 +11,15 @@ interface UserMessageProps {
 
 export default function UserMessage({ msg }: UserMessageProps) {
   const [showModal, setShowModal] = useState<boolean>(false)
-  const { connected, avatar, userId } = useUserContext()
-
-  const handleShowUserModal = () => {
-    setShowModal(true)
-  }
-
-  const handleHideModal = () => {
-    setShowModal(false)
-  }
+  const { connected } = useUserContext()
 
   return (
     <>
-      <ListItem display="flex" alignItems="center">
-        <Box position="relative" onMouseEnter={() => handleShowUserModal()} onMouseLeave={() => handleHideModal()}>
-          <Link href={`/user/${userId}`}>
+      <ListItem display="flex" alignItems="center" position="relative">
+        <Box position="relative" onMouseEnter={() => setShowModal(true)} onMouseLeave={() => setShowModal(false)}>
+          <Link href={`/user/123`}>
             <a>
-              <Img src={avatar} alt={msg.user} borderRadius="50%" w="45px" h="45px" />
+              <Img src={""} alt={msg.user} borderRadius="50%" w="45px" h="45px" />
               <div className={connected ? "connected" : ""} />
             </a>
           </Link>
@@ -36,8 +28,12 @@ export default function UserMessage({ msg }: UserMessageProps) {
           <Text color="red.100">{msg.user}</Text>
           <Text as="span">{msg.body}</Text>
         </Box>
+        {showModal && (
+          <Box position="absolute" top="-2rem">
+            User modal
+          </Box>
+        )}
       </ListItem>
-      {showModal && <Box>User modal</Box>}
     </>
   )
 }

@@ -13,7 +13,7 @@ export default function ChatContent({ query }: any) {
         {messages.length > 1 ? (
           messages.map((msg) => <UserMessage key={nanoid()} msg={msg} />)
         ) : (
-          <div>No chat messages</div>
+          <Box>No chat messages</Box>
         )}
       </UnorderedList>
     </Box>

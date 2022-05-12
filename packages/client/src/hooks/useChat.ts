@@ -5,8 +5,8 @@ const NEW_CHAT_MESSAGE_EVENT = "newChatMessage"
 const SOCKET_SERVER_URL = "http://localhost:8000"
 
 export const useChat = (roomId: any) => {
-  const [messages, setMessages] = useState<string[]>([""])
-  const socketRef = useRef<any>()
+  const [messages, setMessages] = useState<string[]>([])
+  const socketRef = useRef<any>(null)
 
   useEffect(() => {
     socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
