@@ -1,9 +1,12 @@
 import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "http";
+import router from "./routes/user";
 
 const app = express();
 app.use(express.json());
+app.use(router)
+
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -27,4 +30,7 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen(8000);
+// io.listen(8000);
+//
+httpServer.listen(8000)
+console.log(`Server on port ${8000}`)

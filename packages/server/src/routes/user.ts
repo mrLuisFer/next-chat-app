@@ -3,7 +3,7 @@ import createUser from "../utils/createUser";
 
 const router = express.Router();
 
-router.post("/user", (req, res) => {
+router.post("/createuser", (req, res) => {
   res.send("Saving user");
   const { username, password } = req.body;
   const newUser = createUser({ username, password });

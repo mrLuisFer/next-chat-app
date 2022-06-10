@@ -1,21 +1,40 @@
 import type { NextPage } from "next"
 import { FormControl, Input, FormLabel, Box, Button, FormHelperText } from "@chakra-ui/react"
 import { FormEvent, useEffect, useState } from "react"
+import Spinner from "components/common/Spinner"
 
 const Login: NextPage = () => {
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [activeBtn, setActiveBtn] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     setActiveBtn(username.length > 3 && password.length > 3)
   }, [username, password])
 
   const handleSubmitUser = (e: FormEvent<HTMLDivElement>) => {
+    setLoading(true)
     e.preventDefault()
     const userObj = {
       username,
       password,
+    }
+
+    try {
+      let result = fetch("http://localhost:8000/createuser", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          Accept: "aplication/json",
+          "Content-type": "aplication/json",
+        },
+        body: JSON.stringify(userObj),
+      })
+      console.log(result)
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -27,7 +46,6 @@ const Login: NextPage = () => {
         display="flex"
         gridGap="2rem"
         flexFlow="column"
-        action="http://localhost:8000/user"
         method="POST"
         onSubmit={(e) => handleSubmitUser(e)}
       >
@@ -61,7 +79,9 @@ const Login: NextPage = () => {
           </FormHelperText>
         </div>
         <Button type="submit" disabled={!activeBtn}>
-          Log In
+          {
+            loading ? <Spinner /> : "Log In"
+          }
         </Button>
       </FormControl>
     </Box>
