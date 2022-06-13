@@ -1,11 +1,14 @@
 import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "http";
-import router from "./routes/user";
+import router from "./routes";
+import bodyParser from "body-parser"
 
 const app = express();
 app.use(express.json());
 app.use(router)
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -31,6 +34,5 @@ io.on("connection", (socket) => {
 });
 
 // io.listen(8000);
-//
 httpServer.listen(8000)
 console.log(`Server on port ${8000}`)

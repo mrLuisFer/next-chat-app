@@ -13,28 +13,27 @@ const Login: NextPage = () => {
     setActiveBtn(username.length > 3 && password.length > 3)
   }, [username, password])
 
-  const handleSubmitUser = (e: FormEvent<HTMLDivElement>) => {
-    setLoading(true)
+  const handleSubmitUser = async (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault()
-    const userObj = {
-      username,
-      password,
-    }
+    setLoading(true)
 
+    const userObj = {
+      username: username,
+      password: password,
+    }
     try {
-      let result = fetch("http://localhost:8000/createuser", {
+      let response = await fetch("http://localhost:8000/user", {
         method: "POST",
         mode: "no-cors",
         headers: {
-          Accept: "aplication/json",
-          "Content-type": "aplication/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(userObj),
       })
-      console.log(result)
+      console.log(response)
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      console.log(`error: ${error}`)
     }
   }
 
@@ -79,9 +78,7 @@ const Login: NextPage = () => {
           </FormHelperText>
         </div>
         <Button type="submit" disabled={!activeBtn}>
-          {
-            loading ? <Spinner /> : "Log In"
-          }
+          {loading ? <Spinner /> : "Log In"}
         </Button>
       </FormControl>
     </Box>
