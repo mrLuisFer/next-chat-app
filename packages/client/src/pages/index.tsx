@@ -1,13 +1,23 @@
 import type { NextPage } from "next"
-import { FormControl, Input, FormLabel, Box, Button, FormHelperText } from "@chakra-ui/react"
+import { FormControl, Input, FormLabel, Box, Button, FormHelperText, Spinner, Text } from "@chakra-ui/react"
 import { FormEvent, useEffect, useState } from "react"
-import Spinner from "components/common/Spinner"
+import axios from "axios"
+import { BsCheck2 } from "react-icons/bs"
+import type { User } from "../types/index.d.ts"
+import router from "next/router"
+
+interface DataResponse {
+  ok: boolean
+  status: number
+  user: User
+}
 
 const Login: NextPage = () => {
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [activeBtn, setActiveBtn] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const [dataResponse, setDataResponse] = useState<DataResponse>({})
 
   useEffect(() => {
     setActiveBtn(username.length > 3 && password.length > 3)
@@ -17,23 +27,19 @@ const Login: NextPage = () => {
     e.preventDefault()
     setLoading(true)
 
-    const userObj = {
-      username: username,
-      password: password,
-    }
     try {
-      let response = await fetch("http://localhost:8000/user", {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userObj),
+      const res = await axios.post("http://localhost:8000/user", {
+        username,
+        password,
       })
-      console.log(response)
+
       setLoading(false)
+      console.log(res.data)
+      setDataResponse(res.data)
+      // TODO: save the user in a global context
+      router.push("/chat")
     } catch (error) {
-      console.log(`error: ${error}`)
+      console.log(error)
     }
   }
 
@@ -77,10 +83,18 @@ const Login: NextPage = () => {
             {password.length <= 3 ? "Password must be greater than 3" : "Looks good ;)"}
           </FormHelperText>
         </div>
-        <Button type="submit" disabled={!activeBtn}>
-          {loading ? <Spinner /> : "Log In"}
+        <Button type="submit" disabled={!activeBtn || dataResponse.ok}>
+          {loading ? (
+            <Spinner size="md" />
+          ) : (
+            <Box display="flex" alignItems="center" gridGap="0.5rem" color={dataResponse.ok ? "green.200" : "white"}>
+              {dataResponse.ok ? <BsCheck2 size="1.5rem" /> : ""}
+              Log In
+            </Box>
+          )}
         </Button>
       </FormControl>
+      {dataResponse.ok && <Text>Redirecting to the chat...</Text>}
     </Box>
   )
 }
