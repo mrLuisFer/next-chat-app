@@ -14,25 +14,24 @@ app.use(router)
 
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
-	cors: {
-		origin: 'http://localhost:3000'
-	}
+  cors: {
+    origin: 'http://localhost:3000'
+  }
 })
 
 const NEW_CHAT_MESSAGE_EVENT = 'newChatMessage'
 io.on('connection', async (socket) => {
-	console.log(`Client ${socket.id} connected`)
+  console.log(`Client ${socket.id} connected`)
+  const { roomId } = socket.handshake.query
+  await socket.join(roomId as any)
 
-	const { roomId } = socket.handshake.query
-	await socket.join(roomId as any)
+  socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
+    io.in(roomId as any).emit(NEW_CHAT_MESSAGE_EVENT, data)
+  })
 
-	socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
-		io.in(roomId as any).emit(NEW_CHAT_MESSAGE_EVENT, data)
-	})
-
-	socket.on('disconnect', (reason) => {
-		console.log(`Client disconnected 'cause: ${reason}`)
-	})
+  socket.on('disconnect', (reason) => {
+    console.log(`Client disconnected 'cause: ${reason}`)
+  })
 })
 
 // io.listen(8000);
