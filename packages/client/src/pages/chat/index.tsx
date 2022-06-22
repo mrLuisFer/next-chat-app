@@ -5,17 +5,17 @@ import { useUserContext } from "context/UserContext"
 import { Box } from "@chakra-ui/react"
 import { io } from "socket.io-client"
 import { useRouter } from "next/router"
-import ChatHeader from "components/home/Chat/ChatHeader"
-import ChatInput from "components/home/Chat/ChatInput"
-import ChatContent from "components/home/Chat/ChatContent"
+import ChatHeader from "components/chat/ChatHeader"
+import ChatInput from "components/chat/ChatInput"
+import ChatContent from "components/chat/ChatContent"
 
 const Home: NextPage = () => {
   const { userLoading } = useUserContext()
   const [messageText, setMessageText] = useState("")
   const router = useRouter()
 
-  const socket = io("http://localhost:8000")
   useEffect((): any => {
+    const socket = io("http://localhost:8000")
     socket.on("connect", () => console.log(`client ${socket.id} connected`))
     return socket.on("disconnect", () => console.log("server disconnected"))
   }, [])
