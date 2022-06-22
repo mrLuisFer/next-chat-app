@@ -1,10 +1,11 @@
 import type { NextPage } from "next"
-import { FormControl, Input, FormLabel, Box, Button, FormHelperText, Spinner, Text, Heading } from "@chakra-ui/react"
+import { FormControl, Box, Button, FormHelperText, Spinner, Text, Heading } from "@chakra-ui/react"
 import { FormEvent, useEffect, useState } from "react"
 import axios from "axios"
 import { BsCheck2 } from "react-icons/bs"
 import type { User } from "../types/index.d.ts"
 import router from "next/router"
+import Input from "../components/login/Input"
 
 interface DataResponse {
   ok: boolean
@@ -15,6 +16,9 @@ interface DataResponse {
 const Login: NextPage = () => {
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
+
+  const [validEmail, setValidEmail] = useState<boolean>(false)
   const [activeBtn, setActiveBtn] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [dataResponse, setDataResponse] = useState<DataResponse>({
@@ -27,17 +31,20 @@ const Login: NextPage = () => {
   })
 
   useEffect(() => {
-    setActiveBtn(username.length > 3 && password.length > 3)
-  }, [username, password])
+    const emailRegex = new RegExp("[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+")
+    setActiveBtn(username.length > 3 && password.length > 3 && email.length > 3)
+    setValidEmail(emailRegex.test(email))
+  }, [username, password, email])
 
   const handleSubmitUser = async (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault()
     setLoading(true)
 
     try {
-      const res = await axios.post("http://localhost:8000/user", {
+      const res = await axios.post("/api/user", {
         username,
         password,
+        email,
       })
 
       setLoading(false)
@@ -62,35 +69,9 @@ const Login: NextPage = () => {
         method="POST"
         onSubmit={(e) => handleSubmitUser(e)}
       >
-        <div>
-          <FormLabel fontSize="1.2rem" fontWeight="semibold" htmlFor="username">
-            Username
-          </FormLabel>
-          <Input
-            type="text"
-            placeholder="Enter your username"
-            id="username"
-            name="username"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <FormLabel fontSize="1.2rem" fontWeight="semibold" htmlFor="password">
-            Password
-          </FormLabel>
-          <Input
-            type="password"
-            placeholder="Enter your password"
-            id="password"
-            name="password"
-            autoComplete="off"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <FormHelperText color={password.length <= 3 ? "red.600" : "green.200"} opacity="0.6">
-            {password.length <= 3 ? "Password must be greater than 3" : "Looks good ;)"}
-          </FormHelperText>
-        </div>
+        <Input label="username" onChange={setUsername} errorMsg={""} whenShowError={false} />
+        <Input label="email" onChange={setEmail} errorMsg={"Invalid email"} whenShowError={!validEmail} />
+        <Input label="password" onChange={setPassword} errorMsg={"Password must be greater than 3"} whenShowError={password.length <= 3} />
         <Button type="submit" disabled={!activeBtn || dataResponse.ok}>
           {loading ? (
             <Spinner size="md" />
