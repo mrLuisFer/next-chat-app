@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction, useRef, RefObject, MutableRefObject, FormEvent } from "react"
+import { useState, Dispatch, SetStateAction, useRef, FormEvent } from "react"
 import { Box, FormControl, Input } from "@chakra-ui/react"
 import { useGetGifValue } from "context/GifValueContext"
 import { useChat } from "hooks/useChat"
