@@ -7,7 +7,12 @@ export default function SettingsBtn() {
 
   return (
     <Box position="relative">
-      <Box cursor="pointer" title="Settings" onClick={() => setShowSettingsModal((prevState) => !prevState)} userSelect="none">
+      <Box
+        cursor="pointer"
+        title="Settings"
+        onClick={() => setShowSettingsModal((prevState) => !prevState)}
+        userSelect="none"
+      >
         <IoMdSettings size="2rem" />
       </Box>
       {showSettingsModal && (

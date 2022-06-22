@@ -1,5 +1,5 @@
 import type { NextPage } from "next"
-import { FormControl, Input, FormLabel, Box, Button, FormHelperText, Spinner, Text } from "@chakra-ui/react"
+import { FormControl, Input, FormLabel, Box, Button, FormHelperText, Spinner, Text, Heading } from "@chakra-ui/react"
 import { FormEvent, useEffect, useState } from "react"
 import axios from "axios"
 import { BsCheck2 } from "react-icons/bs"
@@ -23,7 +23,7 @@ const Login: NextPage = () => {
     user: {
       username: "",
       password: "",
-    }
+    },
   })
 
   useEffect(() => {
@@ -52,6 +52,7 @@ const Login: NextPage = () => {
 
   return (
     <Box maxW="400px" m="2rem auto 0">
+      <Heading as="h1">Welcome!</Heading>
       <FormControl
         as="form"
         isRequired

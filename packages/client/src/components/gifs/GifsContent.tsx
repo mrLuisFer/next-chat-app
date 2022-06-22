@@ -7,8 +7,7 @@ interface GifsContentProps {
 }
 
 export default function GifsContent({ gifsData, loading }: GifsContentProps) {
-
-  if(loading) {
+  if (loading) {
     return <Spinner size="xl" speed="0.65s" thickness="3px" />
   }
 

@@ -5,13 +5,13 @@ import GifValueContextProvider from "context/GifValueContext"
 import { theme } from "utils/chakraTheme"
 
 export default function ContextProviders({ children }: { children: any }) {
-	return (
-		<ChakraProvider theme={theme}>
-			<UserContextProvider>
-				<ChatContextProvider>
-					<GifValueContextProvider>{children}</GifValueContextProvider>
-				</ChatContextProvider>
-			</UserContextProvider>
-		</ChakraProvider>
-	)
+  return (
+    <ChakraProvider theme={theme}>
+      <UserContextProvider>
+        <ChatContextProvider>
+          <GifValueContextProvider>{children}</GifValueContextProvider>
+        </ChatContextProvider>
+      </UserContextProvider>
+    </ChakraProvider>
+  )
 }
