@@ -7,17 +7,16 @@ interface GifsContentProps {
 }
 
 export default function GifsContent({ gifsData, loading }: GifsContentProps) {
+
+  if(loading) {
+    return <Spinner size="xl" speed="0.65s" thickness="3px" />
+  }
+
   return (
-    <>
-      {loading ? (
-        <Spinner size="xl" />
-      ) : (
-        <Box className="gifsContent">
-          {gifsData.map((gif: any) => (
-            <SingleGif gif={gif} key={gif.id} />
-          ))}
-        </Box>
-      )}
-    </>
+    <Box className="gifsContent">
+      {gifsData.map((gif: any) => (
+        <SingleGif gif={gif} key={gif.id} />
+      ))}
+    </Box>
   )
 }

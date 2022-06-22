@@ -7,7 +7,6 @@ export default function SingleGif({ gif }: { gif: any }) {
   const width: number = parseInt(gif.images.preview_gif.width)
   const height: number = parseInt(gif.images.preview_gif.height)
 
-  console.log(gif)
   return (
     <Box display="inline-block" position="relative" margin="0.2rem">
       {isHoverGif && (

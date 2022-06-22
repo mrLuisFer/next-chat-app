@@ -17,7 +17,14 @@ const Login: NextPage = () => {
   const [password, setPassword] = useState<string>("")
   const [activeBtn, setActiveBtn] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
-  const [dataResponse, setDataResponse] = useState<DataResponse>({})
+  const [dataResponse, setDataResponse] = useState<DataResponse>({
+    ok: false,
+    status: 0,
+    user: {
+      username: "",
+      password: "",
+    }
+  })
 
   useEffect(() => {
     setActiveBtn(username.length > 3 && password.length > 3)
