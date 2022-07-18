@@ -1,11 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-// import { signIn, signOut } from "next-auth/react";
-import { Box, List, ListItem, Text, Link as ChakraLink } from "@chakra-ui/react";
+import { Box, List, ListItem, Text, useBoolean, Fade, Link as ChakraLink } from "@chakra-ui/react";
 import Link from "../components/Link";
 import { IoChatbubbleEllipses } from "react-icons/io5";
 import GitHubProjects from "../components/GitHubProjects";
 import { Octokit } from "octokit";
+import { HiHashtag } from "react-icons/hi";
+import ContactHomeSection from "../components/ContactHomeSection";
 
 const Item = ({ children }: { children: any }) => {
   return (
@@ -79,6 +80,34 @@ const Header = () => {
   );
 };
 
+export const HomeTittle = ({ children }: { children: any }) => {
+  const [flag, setFlag] = useBoolean();
+
+  return (
+    <Box
+      color="gray.800"
+      fontWeight="semibold"
+      fontSize="1.5rem"
+      display="flex"
+      alignItems="center"
+      onMouseEnter={setFlag.on}
+      onMouseLeave={setFlag.off}
+      opacity="0.8"
+      w="fit-content"
+      cursor="default"
+      transition="0.15s ease"
+      _hover={{
+        opacity: "1",
+      }}
+    >
+      <Fade in={flag}>
+        <HiHashtag />
+      </Fade>
+      {children}
+    </Box>
+  );
+};
+
 export const getServerSideProps = async () => {
   const octokit = new Octokit({ auth: process.env.GITHUB_OCTOKIT_AUTH });
   const res = await octokit.request("GET /user/repos");
@@ -99,7 +128,11 @@ const Home: NextPage<{ ghUserData: any[] }> = ({ ghUserData = [] }) => {
       <Box as="main">
         <Header />
         <Box as="section" p="1rem 3rem">
+          <HomeTittle>Projects</HomeTittle>
           <GitHubProjects ghUserData={ghUserData} />
+          <Box display="block" w="100%" mt="2rem" />
+          <HomeTittle>Contact</HomeTittle>
+          <ContactHomeSection />
         </Box>
         <Box p="0 3rem">
           <Box as="footer" color="blackAlpha.500" borderTop="1px solid" borderColor="gray.300" pt="1rem">
