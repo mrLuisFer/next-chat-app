@@ -64,13 +64,14 @@ const Header = () => {
         <Link
           to="/auth/signup"
           p="0.5rem 1rem"
-          bg="blue.500"
+          bg="black"
           borderRadius="8px"
           color="white"
           cursor="pointer"
           transition="0.15s ease-in-out"
           _hover={{
             filter: "brightness(1.15)",
+            bg: "blue.500"
           }}
         >
           Sign up
@@ -135,7 +136,7 @@ const Home: NextPage<{ ghUserData: any[] }> = ({ ghUserData = [] }) => {
           <ContactHomeSection />
         </Box>
         <Box p="0 3rem">
-          <Box as="footer" color="blackAlpha.500" borderTop="1px solid" borderColor="gray.300" pt="1rem">
+          <Box as="footer" color="blackAlpha.500" borderTop="1px solid" borderColor="gray.300" p="1rem 0 2rem">
             <Text userSelect="none">2022 Chat. All rights reserved.</Text>
           </Box>
         </Box>
