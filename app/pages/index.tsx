@@ -7,6 +7,7 @@ import GitHubProjects from "../components/GitHubProjects";
 import { Octokit } from "octokit";
 import { HiHashtag } from "react-icons/hi";
 import ContactHomeSection from "../components/ContactHomeSection";
+import { signIn } from "next-auth/react";
 
 const Item = ({ children }: { children: any }) => {
   return (
@@ -36,14 +37,16 @@ const Header = () => {
         fontWeight="bold"
         gridGap="0.3em"
         cursor="pointer"
+        borderRadius="8px"
         p="0.3rem 0.8rem"
+        transition="0.15s ease"
         _hover={{
-          bg: "gray.100",
-          borderRadius: "8px",
+          bg: "black",
+          color: "white",
         }}
       >
         <IoChatbubbleEllipses />
-        <Text as="span">Chat</Text>
+        <Text as="span">Chat App</Text>
       </Link>
       <List display="flex" alignItems="center" gridGap="1.4rem">
         <Item>
@@ -58,9 +61,14 @@ const Header = () => {
         </Item>
       </List>
       <Box display="flex" alignItems="center" justifyContent="flex-end" gridGap="1.5rem">
-        <Link to="/auth/login" cursor="pointer" transition="0.15s ease-in-out" _hover={{ color: "blackAlpha.700" }}>
+        <Box
+          cursor="pointer"
+          transition="0.15s ease-in-out"
+          _hover={{ color: "blackAlpha.700" }}
+          onClick={() => signIn()}
+        >
           Log in
-        </Link>
+        </Box>
         <Link
           to="/auth/signup"
           p="0.5rem 1rem"
@@ -71,7 +79,7 @@ const Header = () => {
           transition="0.15s ease-in-out"
           _hover={{
             filter: "brightness(1.15)",
-            bg: "blue.500"
+            bg: "blue.500",
           }}
         >
           Sign up

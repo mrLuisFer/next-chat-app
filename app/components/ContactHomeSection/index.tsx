@@ -1,10 +1,12 @@
-import { Box, Text, Heading, Textarea } from "@chakra-ui/react";
-import { FormEvent, useState } from "react";
+import { Box, Text, Heading, Textarea, FormControl, FormLabel } from "@chakra-ui/react";
 import ContactInput from "./ContactInput";
 import { FaHourglassEnd } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { BiCheck } from "react-icons/bi";
 import Image from "next/image";
+import { FormEvent, useState, useRef } from "react";
+import emailjs from "@emailjs/browser";
+import { BiTrashAlt } from "react-icons/bi";
 
 const ContactFlex = ({ children }: { children: any }) => {
   return (
@@ -22,16 +24,42 @@ export default function ContactHomeSection() {
   const [msg, setMsg] = useState<string>("");
   const [btnStatus, setBtnStatus] = useState<BtnStatus>("none");
 
+  const formRef = useRef<any>();
+
   const emailRegex = new RegExp("[^@ \t\r\n]+@[^@ \t\r\n]+.[^@ \t\r\n]+");
   const emailErr: boolean = !emailRegex.test(email);
   const nameErr: boolean = name.length <= 2;
   const msgErr: boolean = msg.length <= 5;
   const invalidBtn: boolean = emailErr || nameErr || msgErr;
 
+  const clearInputs = () => {
+    setName("");
+    setEmail("");
+    setMsg("");
+  };
+
   const handleSubmit = (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
     setBtnStatus("submitting");
-    console.log(e);
+
+    emailjs
+      .sendForm(`${process.env.SERVICE_ID}`, `${process.env.TEMPLATE_ID}`, formRef.current, `${process.env.EMAIL_KEY}`)
+      .then(
+        (result: any) => {
+          if (result.text === "OK") {
+            setBtnStatus("completed");
+            clearInputs();
+            const timer = setTimeout(() => {
+              setBtnStatus("none");
+            }, 2000);
+
+            return clearTimeout(timer);
+          }
+        },
+        (error: any) => {
+          console.log(error.text);
+        }
+      );
   };
 
   const renderSwitch = (iconStatus: BtnStatus) => {
@@ -60,6 +88,7 @@ export default function ContactHomeSection() {
       </Box>
       <Box
         as="form"
+        ref={formRef}
         maxW="800px"
         display="flex"
         justifyContent="center"
@@ -78,6 +107,7 @@ export default function ContactHomeSection() {
             placeholder="John"
             key="name"
             onError={nameErr}
+            name="user_name"
           />
           <ContactInput
             label="Your email"
@@ -87,22 +117,27 @@ export default function ContactHomeSection() {
             helperMsg=""
             placeholder="john@email.com"
             key="email"
+            name="user_email"
             onError={emailErr}
           />
         </ContactFlex>
         <ContactFlex>
-          <Textarea
-            placeholder="Write your message here pls..."
-            value={msg}
-            onChange={(e) => setMsg(e.target.value)}
-            resize="none"
-            size="md"
-          />
+          <FormControl>
+            <FormLabel>Message</FormLabel>
+            <Textarea
+              placeholder="Write your message here pls..."
+              value={msg}
+              onChange={(e) => setMsg(e.target.value)}
+              resize="none"
+              name="message"
+              size="md"
+            />
+          </FormControl>
           <Box
             as="button"
-            bg="black"
-            opacity={invalidBtn ? "0.6" : "1"}
-            color="white"
+            bg={btnStatus === "completed" ? "green.400" : "black"}
+            opacity={btnStatus === "completed" ? "1" : invalidBtn ? "0.6" : "1"}
+            color={btnStatus === "completed" ? "gray.900" : "white"}
             display="flex"
             alignItems="center"
             justifyContent="center"
@@ -122,9 +157,30 @@ export default function ContactHomeSection() {
             }}
           >
             {renderSwitch(btnStatus)}
-            Just send
+            {btnStatus === "completed" ? "Completed" : "Just send"}
           </Box>
         </ContactFlex>
+        <Box
+          as="button"
+          display="flex"
+          type="button"
+          alignItems="center"
+          gridGap="0.5rem"
+          fontSize="0.9rem"
+          w="fit-content"
+          p="0.5rem 1rem"
+          transition="0.15s ease"
+          cursor="default"
+          borderRadius="1px"
+          _hover={{ bg: "black", color: "white", borderRadius: "8px" }}
+          onClick={() => {
+            clearInputs();
+            setBtnStatus("none");
+          }}
+        >
+          <BiTrashAlt />
+          Clear all inputs
+        </Box>
       </Box>
     </Box>
   );

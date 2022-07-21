@@ -10,6 +10,7 @@ interface InputProps {
   helperMsg: string;
   required?: boolean;
   onError: boolean;
+  name: string;
 }
 
 export default function ContactInput({
@@ -21,6 +22,7 @@ export default function ContactInput({
   helperMsg,
   required = false,
   onError = false,
+  name = "",
 }: InputProps) {
   const [focus, setFocus] = useState<boolean>(false);
 
@@ -42,6 +44,7 @@ export default function ContactInput({
         value={value}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
+        name={name}
       />
       {onError ? <FormErrorMessage>{errorMsg}</FormErrorMessage> : <FormHelperText>{helperMsg}</FormHelperText>}
     </FormControl>
