@@ -155,6 +155,10 @@ export default function ContactHomeSection() {
             _hover={{
               background: invalidBtn ? "" : "blue.500",
             }}
+            _focus={{
+              background: invalidBtn ? "" : "blue.500",
+              borderColor: invalidBtn ? "" : "blue.500",
+            }}
           >
             {renderSwitch(btnStatus)}
             {btnStatus === "completed" ? "Completed" : "Just send"}
