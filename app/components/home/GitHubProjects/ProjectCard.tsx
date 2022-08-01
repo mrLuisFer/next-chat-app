@@ -23,7 +23,7 @@ const ProjectCard = ({ repo }: { repo: any }) => {
             <Box fontSize="1.7rem">
               <GoMarkGithub />
             </Box>
-            <Text maxWidth="250px" noOfLines={1} textTransform="capitalize">
+            <Text fontWeight="semibold" maxWidth="250px" noOfLines={1} textTransform="capitalize">
               {repo.name}
             </Text>
           </Box>

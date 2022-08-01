@@ -53,6 +53,7 @@ export default function GitHubProjects({ ghUserData }: { ghUserData: any }) {
       ))}
 
       <Box
+        as="button"
         position="absolute"
         w="300px"
         bg="gray.100"
@@ -67,24 +68,25 @@ export default function GitHubProjects({ ghUserData }: { ghUserData: any }) {
         borderRadius="15px"
         right="0"
         margin="0 auto"
-        transition="0.15s ease-in-out"
+        color="gray.500"
+        transition="0.15s ease"
         _hover={{
-          opacity: "0.8",
+          opacity: "1",
+          bg: "black",
+          color: "white",
         }}
+        _active={{ transform: "scale(0.95)" }}
+        onClick={() => setExpandRepos((prevState) => !prevState)}
       >
         <Box
-          as="button"
           display="flex"
           alignItems="center"
           justifyContent="center"
           gridGap="0.5rem"
-          color="gray.500"
-          transition="0.15s ease-in-out"
-          cursor="default"
-          _hover={{ color: "gray.800" }}
-          onClick={() => setExpandRepos((prevState) => !prevState)}
+          cursor="inherit"
+          fontWeight="semibold"
         >
-          {expandRepos ? "Collapse" : "Expand"}
+          {expandRepos ? "Show less" : "Show more..."}
           <Text fontSize="1.5rem">{expandRepos ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}</Text>
         </Box>
       </Box>

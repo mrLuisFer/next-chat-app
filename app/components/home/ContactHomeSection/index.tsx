@@ -172,6 +172,7 @@ export default function ContactHomeSection() {
           transition="0.15s ease"
           cursor="default"
           borderRadius="1px"
+          fontWeight="semibold"
           _hover={{ bg: "black", color: "white", borderRadius: "8px" }}
           onClick={() => {
             clearInputs();
