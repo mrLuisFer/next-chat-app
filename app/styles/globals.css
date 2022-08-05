@@ -23,3 +23,7 @@ a {
 button {
   cursor: default;
 }
+
+.profile-img {
+  border-radius: 20px;
+}

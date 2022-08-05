@@ -36,10 +36,9 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRET!,
     }),
   ],
-  /*pages: {
-    signIn: "/auth/login",
+  pages: {
     error: "/auth/404",
-  },*/
+  },
 };
 
 export default NextAuth(authOptions);

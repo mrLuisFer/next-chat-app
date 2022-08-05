@@ -39,6 +39,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Home: NextPage<{ ghUserData: any[]; providers: any[] }> = ({ ghUserData = [], providers }) => {
+
+  console.log(ghUserData)
+
   return (
     <>
       <Head>
