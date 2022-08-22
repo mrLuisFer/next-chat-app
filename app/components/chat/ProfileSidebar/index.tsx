@@ -35,6 +35,7 @@ const ProfileSidebar = () => {
     return <Box>Session not found</Box>;
   }
 
+  console.log(session)
   const username: string = session!.user!.name!.toLowerCase().split(" ").join("-");
 
   return (

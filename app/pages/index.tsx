@@ -11,6 +11,10 @@ import { signIn, getProviders } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 
+const octokit = new Octokit({ auth: process.env.GITHUB_OCTOKIT_AUTH });
+const res = await octokit.request("GET /user/repos");
+const providers = await getProviders();
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await unstable_getServerSession(context.req, context.res, authOptions);
   if (session) {
@@ -22,25 +26,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const octokit = new Octokit({ auth: process.env.GITHUB_OCTOKIT_AUTH });
-  const res = await octokit.request("GET /user/repos");
-  const providers = await getProviders();
-
-  if (res && providers) {
-    return { props: { ghUserData: res.data, providers } };
-  }
-
-  return {
-    props: {
-      ghUserData: [],
-      providers: [],
-    },
-  };
+  return { props: { ghUserData: res.data || [], providers: providers || [] } };
 };
 
 const Home: NextPage<{ ghUserData: any[]; providers: any[] }> = ({ ghUserData = [], providers }) => {
-
-  console.log(ghUserData)
 
   return (
     <>
@@ -53,7 +42,7 @@ const Home: NextPage<{ ghUserData: any[]; providers: any[] }> = ({ ghUserData = 
         <Header providers={providers} />
         <Box as="section" p="1rem 3rem">
           <HomeTittle>Projects</HomeTittle>
-          <GitHubProjects ghUserData={ghUserData} />
+          <GitHubProjects repositories={ghUserData} />
           <Box display="block" w="100%" mt="2rem" />
           <HomeTittle>Contact</HomeTittle>
           <ContactHomeSection />

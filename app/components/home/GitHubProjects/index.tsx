@@ -4,7 +4,9 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import ProjectCard from "./ProjectCard";
 import SkeletonCard from "./SkeletonCard";
 
-export default function GitHubProjects({ ghUserData }: { ghUserData: any }) {
+const defaultSkeletonArr: number[] = [...Array(10)];
+
+export default function GitHubProjects({ repositories }: { repositories: any }) {
   const [expandRepos, setExpandRepos] = useState<boolean>(false);
   const [s, setS] = useState(true);
 
@@ -16,42 +18,21 @@ export default function GitHubProjects({ ghUserData }: { ghUserData: any }) {
     return () => clearTimeout(timer);
   }, []);
 
-  if (!ghUserData || s) {
-    const defaultSkeletonArr: number[] = [...Array(10)];
-
+  if (!repositories || s) {
     return (
-      <Grid
-        templateColumns="repeat(4, 1fr)"
-        templateRows="masonry"
-        justifyContent="center"
-        w="100%"
-        position="relative"
-        id="projects"
-        gap="0 0.5rem"
-      >
+      <GridContainer>
         {defaultSkeletonArr.map((u, i) => (
           <SkeletonCard key={`${u}_${i}`} />
         ))}
-      </Grid>
+      </GridContainer>
     );
   }
 
-  // console.log(ghUserData);
-  const repositories = ghUserData;
   return (
-    <Grid
-      templateColumns="repeat(4, 1fr)"
-      templateRows="masonry"
-      justifyContent="center"
-      w="100%"
-      position="relative"
-      id="projects"
-      gap="0 0.5rem"
-    >
+    <GridContainer>
       {repositories.slice(0, expandRepos ? repositories?.length : 10).map((repo: any) => (
         <ProjectCard repo={repo} key={repo.id} />
       ))}
-
       <Box
         as="button"
         position="absolute"
@@ -90,6 +71,21 @@ export default function GitHubProjects({ ghUserData }: { ghUserData: any }) {
           <Text fontSize="1.5rem">{expandRepos ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}</Text>
         </Box>
       </Box>
-    </Grid>
+    </GridContainer>
   );
+}
+
+function GridContainer({children}: {children: JSX.Element | any}) {
+  return (
+    <Grid
+      templateColumns="repeat(4, 1fr)"
+      templateRows="masonry"
+      justifyContent="center"
+      w="100%"
+      position="relative"
+      gap="0 0.5rem"
+    >
+      {children}
+    </Grid>
+  )
 }
