@@ -1,78 +1,49 @@
-import type { NextPage, GetServerSideProps } from "next";
-import { getProviders, signIn } from "next-auth/react";
-import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "../api/auth/[...nextauth]";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Button, Container, Input, Text, Link as ChakraLink } from "@chakra-ui/react";
+import { NextPage } from "next";
+import Link from "next/link";
+import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
+import { useRouter } from "next/router";
+import { FormEvent } from "react";
 
-const LoginPage: NextPage<{ providers: any[] }> = ({ providers }) => {
+const Register: NextPage = () => {
+  const [err, setErr] = useState(false);
+  const router = useRouter();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any) => {
+    e.preventDefault();
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/chat");
+    } catch (err) {
+      setErr(true);
+    }
+  };
+
   return (
-    <Box
-      as="section"
-      bg="black"
-      height="100vh"
-      display="grid"
-      placeContent="center"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <Box
-        as="article"
-        bg="gray.900"
-        color="white"
-        transition="0.15s ease-in-out"
-        p="2rem 3rem"
-        borderRadius="8px"
-        display="flex"
-        flexDirection="column"
-        gridGap="1rem"
-        _hover={{ borderRadius: "10px" }}
-      >
-        <Text
-          textAlign="center"
-          fontWeight="bold"
-          fontSize="1.5rem"
-          mb="1rem"
-          borderBottom="2px solid"
-          borderColor="gray.800"
-          lineHeight="2"
-        >
-          Quick Login
-        </Text>
-        {Object.values(providers).map((provider) => (
-          <Box
-            as="button"
-            key={provider.name}
-            p="1rem 3rem"
-            borderRadius="10px"
-            _hover={{ bg: "black", color: "white" }}
-            onClick={() => signIn(provider.id)}
-          >
-            <Box cursor="pointer" fontWeight="semibold" _hover={{ color: "blue.500" }}>
-              Sign in with {provider.name}
-            </Box>
-          </Box>
-        ))}
+    <Container pt={10}>
+      <Box as="form" onSubmit={handleSubmit}>
+        <Input type="email" name="email" placeholder="Email" />
+        <Input type="password" name="password" placeholder="Password" />
+        <Button mt={4} type="submit">
+          Login
+        </Button>
       </Box>
-    </Box>
+      <Text>
+        {"Don't have an account?"}
+        <Link href="/auth/register">
+          <ChakraLink ml={2} color="blue.600">
+            Register
+          </ChakraLink>
+        </Link>
+      </Text>
+      {err && <Text color="red.500">Something went wrong</Text>}
+    </Container>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const providers = await getProviders();
-  const session = await unstable_getServerSession(context.req, context.res, authOptions);
-
-  if (session) {
-    return {
-      redirect: {
-        destination: "/chat",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { providers },
-  };
-};
-
-export default LoginPage;
+export default Register;

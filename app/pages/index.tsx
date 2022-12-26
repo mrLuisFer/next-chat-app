@@ -1,35 +1,23 @@
-import type { GetServerSideProps, NextPage } from "next";
+import type { NextPage } from "next";
 import Head from "next/head";
-import { Box, List, ListItem, Text, useBoolean, Fade, Link as ChakraLink } from "@chakra-ui/react";
-import Link from "../components/Link";
-import { IoChatbubbleEllipses } from "react-icons/io5";
-import GitHubProjects from "../components/home/GitHubProjects";
-import { Octokit } from "octokit";
-import { HiHashtag } from "react-icons/hi";
+import { Box, Text } from "@chakra-ui/react";
 import ContactHomeSection from "../components/home/ContactHomeSection";
-import { signIn, getProviders } from "next-auth/react";
-import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
+import Header from "../components/home/Header";
+import HomeTittle from "../components/home/Title";
+import { useUserContext } from "../hooks/useUserContext";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
-const octokit = new Octokit({ auth: process.env.GITHUB_OCTOKIT_AUTH });
-const res = await octokit.request("GET /user/repos");
-const providers = await getProviders();
+const Home: NextPage = () => {
+  const router = useRouter();
+  const { user } = useUserContext();
+  console.log(user);
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(context.req, context.res, authOptions);
-  if (session) {
-    return {
-      redirect: {
-        destination: "/chat",
-        permanent: false,
-      },
-    };
-  }
-
-  return { props: { ghUserData: res.data || [], providers: providers || [] } };
-};
-
-const Home: NextPage<{ ghUserData: any[]; providers: any[] }> = ({ ghUserData = [], providers }) => {
+  // useEffect(() => {
+  //   if (Object.keys(user).length === 0) {
+  //     router.push("/chat");
+  //   }
+  // }, []);
 
   return (
     <>
@@ -39,12 +27,9 @@ const Home: NextPage<{ ghUserData: any[]; providers: any[] }> = ({ ghUserData = 
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box as="main">
-        <Header providers={providers} />
-        <Box as="section" p="1rem 3rem">
-          <HomeTittle>Projects</HomeTittle>
-          <GitHubProjects repositories={ghUserData} />
+        <Header />
+        <Box as="section" p="1rem 3rem" minH="100vh">
           <Box display="block" w="100%" mt="2rem" />
-          <HomeTittle>Contact</HomeTittle>
           <ContactHomeSection />
         </Box>
         <Box p="3rem 3rem 0" fontSize="0.8rem">
@@ -54,133 +39,6 @@ const Home: NextPage<{ ghUserData: any[]; providers: any[] }> = ({ ghUserData = 
         </Box>
       </Box>
     </>
-  );
-};
-
-const Item = ({ children }: { children: any }) => {
-  return (
-    <ListItem
-      transition="0.15s ease-in-out"
-      userSelect="none"
-      borderBottom="2px solid"
-      lineHeight="-3px"
-      borderColor="transparent"
-      _hover={{ color: "blackAlpha.700", borderColor: "blackAlpha.700" }}
-    >
-      {children}
-    </ListItem>
-  );
-};
-
-const Header = ({ providers }: { providers: any[] }) => {
-  return (
-    <Box
-      as="header"
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      p="1rem 2rem"
-      boxShadow="0 3px 3px rgba(0, 0, 0, 0.05)"
-      color="blackAlpha.600"
-      fontSize="1rem"
-    >
-      <Box display="flex" alignItems="center" gridGap="1rem">
-        <Link
-          to="/"
-          color="gray.900"
-          display="flex"
-          alignItems="center"
-          fontWeight="bold"
-          gridGap="0.3em"
-          cursor="pointer"
-          borderRadius="8px"
-          p="0.3rem 0.8rem"
-          transition="0.15s ease"
-          _hover={{
-            bg: "black",
-            color: "white",
-          }}
-        >
-          <IoChatbubbleEllipses />
-          <Text as="span">Chat App</Text>
-        </Link>
-        <List display="flex" alignItems="center" gridGap="1.4rem">
-          <Item>
-            <ChakraLink href="#projects" _hover={{ textDecoration: "none" }}>
-              Projects
-            </ChakraLink>
-          </Item>
-          <Item>
-            <ChakraLink href="#contactus" _hover={{ textDecoration: "none" }}>
-              Contact Us
-            </ChakraLink>
-          </Item>
-        </List>
-      </Box>
-
-      <Box display="flex" alignItems="center" justifyContent="flex-end" gridGap="1rem">
-        {Object.values(providers).map((provider) => (
-          <Box
-            key={provider.name}
-            cursor="pointer"
-            transition="0.15s ease-in-out"
-            padding="0.3rem 0.5rem"
-            borderRadius="8px"
-            fontSize="0.9rem"
-            fontWeight="semibold"
-            _hover={{ color: "white", bg: "black" }}
-            _active={{ bg: "blue.500" }}
-            onClick={() => signIn(provider.id)}
-          >
-            Login with {provider.name}
-          </Box>
-        ))}
-        <Link
-          to="/auth/login"
-          p="0.5rem 1rem"
-          fontWeight="semibold"
-          bg="black"
-          borderRadius="8px"
-          color="white"
-          cursor="pointer"
-          transition="0.15s ease-in-out"
-          _hover={{
-            filter: "brightness(1.15)",
-            bg: "blue.500",
-          }}
-        >
-          Log in
-        </Link>
-      </Box>
-    </Box>
-  );
-};
-
-export const HomeTittle = ({ children }: { children: any }) => {
-  const [flag, setFlag] = useBoolean();
-
-  return (
-    <Box
-      color="gray.800"
-      fontWeight="semibold"
-      fontSize="1.5rem"
-      display="flex"
-      alignItems="center"
-      onMouseEnter={setFlag.on}
-      onMouseLeave={setFlag.off}
-      opacity="0.8"
-      w="fit-content"
-      cursor="default"
-      transition="0.15s ease"
-      _hover={{
-        opacity: "1",
-      }}
-    >
-      <Fade in={flag}>
-        <HiHashtag />
-      </Fade>
-      {children}
-    </Box>
   );
 };
 

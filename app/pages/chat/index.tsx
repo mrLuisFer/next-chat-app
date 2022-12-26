@@ -1,49 +1,29 @@
-import type { GetServerSideProps, NextPage } from "next";
-import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]";
+import type { NextPage } from "next";
 import { Box } from "@chakra-ui/react";
 import ProfileSidebar from "../../components/chat/ProfileSidebar";
 import io from "socket.io-client";
 import ChatContent from "../../components/chat/Content";
 import Channels from "../../components/chat/Channels";
-import prisma from "../../lib/prisma";
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  try {
-    const session = await unstable_getServerSession(context.req, context.res, authOptions);
-    if (!session) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-
-    const user = await prisma.user.findUnique({
-      where: {
-        email: `${session!.user!.email!}`,
-      },
-    });
-
-
-    return {
-      props: {
-        user
-      },
-    };
-  } catch (e) {
-    console.log(e);
-    return {
-      props: {},
-    };
-  }
-};
+import { useUserContext } from "../../hooks/useUserContext";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const socket = io("http://localhost:3001");
 
-const ChatPage: NextPage = ({ user }: { user: any }) => {
-  console.log(user)
+const ChatPage: NextPage = () => {
+  const router = useRouter();
+  const { user } = useUserContext();
+  console.log(user);
+
+  useEffect(() => {
+    if (Object.keys(user).length === 0) {
+      router.push("/");
+    }
+  }, [user, router]);
+
+  if (Object.keys(user).length === 0) {
+    return <Box>Loading...</Box>;
+  }
 
   return (
     <Box minHeight="100vh" width="100%">

@@ -6,20 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "db": "npx prisma studio"
+    "lint": "next lint"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.2.4",
     "@emailjs/browser": "^3.6.2",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@next-auth/prisma-adapter": "^1.0.3",
-    "@prisma/client": "^4.1.1",
     "emailjs": "^4.0.0",
+    "firebase": "^9.15.0",
     "framer-motion": "^6",
     "next": "12.2.2",
-    "next-auth": "^4.10.0",
     "octokit": "^2.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -32,7 +29,6 @@
     "@types/react-dom": "18.0.6",
     "eslint": "8.19.0",
     "eslint-config-next": "12.2.2",
-    "prisma": "^4.1.1",
     "typescript": "4.7.4"
   }
 }

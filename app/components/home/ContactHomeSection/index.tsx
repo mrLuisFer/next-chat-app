@@ -7,6 +7,7 @@ import Image from "next/image";
 import { FormEvent, useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { BiTrashAlt } from "react-icons/bi";
+import HomeTittle from "../Title";
 
 const ContactFlex = ({ children }: { children: any }) => {
   return (
@@ -23,12 +24,11 @@ export default function ContactHomeSection() {
   const [email, setEmail] = useState<string>("");
   const [msg, setMsg] = useState<string>("");
   const [btnStatus, setBtnStatus] = useState<BtnStatus>("none");
-
   const formRef = useRef<any>();
 
   const emailRegex = new RegExp("[^@ \t\r\n]+@[^@ \t\r\n]+.[^@ \t\r\n]+");
   const emailErr: boolean = !emailRegex.test(email);
-  const nameErr: boolean = name.length <= 2;
+  const nameErr: boolean = !(name.length === 0) && name.length <= 2;
   const msgErr: boolean = msg.length <= 5;
   const invalidBtn: boolean = emailErr || nameErr || msgErr;
 
@@ -77,6 +77,7 @@ export default function ContactHomeSection() {
 
   return (
     <Box id="contactus">
+      <HomeTittle>Contact</HomeTittle>
       <Box display="flex" justifyContent="center">
         <Heading as="h2" fontWeight="semibold" lineHeight="1.5" mb="1rem" textAlign="center">
           Love to hear from you,{" "}
@@ -154,6 +155,7 @@ export default function ContactHomeSection() {
             onClick={() => setBtnStatus("submitting")}
             _hover={{
               background: invalidBtn ? "" : "blue.500",
+              cursor: invalidBtn ? "not-allowed" : "pointer",
             }}
             _focus={{
               background: invalidBtn ? "" : "blue.500",

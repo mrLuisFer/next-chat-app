@@ -1,12 +1,12 @@
-import { useSession, signOut, SignOutResponse } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Box, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import { Box, Text, Image } from "@chakra-ui/react";
 import Link from "next/link";
 import { IoSettingsSharp, IoChatbubbles } from "react-icons/io5";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { useState } from "react";
 import { IconType } from "react-icons";
+import { signOut } from "firebase/auth";
+import { auth } from "../../../firebase";
 
 const hoverOpt = {
   bg: "black",
@@ -17,26 +17,12 @@ const hoverOpt = {
 };
 
 const ProfileSidebar = () => {
-  const { data: session } = useSession();
   const router = useRouter();
 
-  const handleSignOut = async () => {
-    const data: SignOutResponse | any = await signOut({
-      redirect: true,
-      callbackUrl: "/auth/login",
-    });
-
-    if (data) {
-      router.push(data.url);
-    }
+  const handleLogOut = () => {
+    signOut(auth);
+    router.push("/");
   };
-
-  if (!session) {
-    return <Box>Session not found</Box>;
-  }
-
-  console.log(session)
-  const username: string = session!.user!.name!.toLowerCase().split(" ").join("-");
 
   return (
     <Box
@@ -49,15 +35,9 @@ const ProfileSidebar = () => {
     >
       <Box>
         <SidebarTitle>Profile</SidebarTitle>
-        <SidebarLink href={`/profile/${username}`}>
-          <Image
-            src={session!.user!.image || ""}
-            alt={session!.user!.name || ""}
-            width="50px"
-            height="50px"
-            className="profile-img"
-          />
-          <Text>{session!.user!.name || ""}</Text>
+        <SidebarLink href={`/profile/${""}`}>
+          <Image src={""} alt={""} width="50px" height="50px" className="profile-img" />
+          <Text>{""}</Text>
         </SidebarLink>
         <Box display="flex" flexDirection="column" gridGap="1rem" mt="3rem">
           <SidebarLink href="/chat" icon={<IoChatbubbles />}>
@@ -66,6 +46,7 @@ const ProfileSidebar = () => {
           <SidebarLink href="/about" icon={<BsInfoCircleFill />}>
             About
           </SidebarLink>
+          <SidebarBtn onClickFunc={handleLogOut}>Logout</SidebarBtn>
         </Box>
       </Box>
       <Box>
@@ -77,7 +58,7 @@ const ProfileSidebar = () => {
 };
 
 type Icon = IconType | JSX.Element | any;
-function SidebarBtn({ children, icon }: { children: any; icon?: Icon }) {
+function SidebarBtn({ children, icon, onClickFunc }: { children: any; icon?: Icon; onClickFunc?: any }) {
   return (
     <Box
       as="button"
@@ -93,6 +74,7 @@ function SidebarBtn({ children, icon }: { children: any; icon?: Icon }) {
       w="100%"
       textTransform="capitalize"
       _hover={hoverOpt}
+      onClick={onClickFunc}
     >
       {icon ? <Text fontSize="1.5rem">{icon}</Text> : <></>}
       {children}

@@ -4,7 +4,12 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ["avatars.githubusercontent.com"]
-  }
+  },
+  experimental: { appDir: true },
+  webpack(config) {
+    config.experiments = { ...config.experiments, topLevelAwait: true }
+    return config
+  },
 }
 
 module.exports = nextConfig
