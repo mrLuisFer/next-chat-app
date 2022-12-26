@@ -1,23 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Box, Text } from "@chakra-ui/react";
-import ContactHomeSection from "../components/home/ContactHomeSection";
-import Header from "../components/home/Header";
-import HomeTittle from "../components/home/Title";
+import Header from "../components/shared/Header";
 import { useUserContext } from "../hooks/useUserContext";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
-  const router = useRouter();
   const { user } = useUserContext();
   console.log(user);
-
-  // useEffect(() => {
-  //   if (Object.keys(user).length === 0) {
-  //     router.push("/chat");
-  //   }
-  // }, []);
 
   return (
     <>
@@ -28,10 +17,7 @@ const Home: NextPage = () => {
       </Head>
       <Box as="main">
         <Header />
-        <Box as="section" p="1rem 3rem" minH="100vh">
-          <Box display="block" w="100%" mt="2rem" />
-          <ContactHomeSection />
-        </Box>
+        <Box as="section" p="1rem 3rem" minH="100vh"></Box>
         <Box p="3rem 3rem 0" fontSize="0.8rem">
           <Box as="footer" color="blackAlpha.500" borderTop="1px solid" borderColor="gray.300" p="1rem 0 2rem">
             <Text userSelect="none">2022 Chat. All rights reserved.</Text>

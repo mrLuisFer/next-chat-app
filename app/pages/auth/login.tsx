@@ -6,6 +6,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useRouter } from "next/router";
 import { FormEvent } from "react";
+import Header from "../../components/shared/Header";
+import Title from "../../components/shared/Title";
+import CustomButton from "../../components/shared/CustomButton";
 
 const Register: NextPage = () => {
   const [err, setErr] = useState(false);
@@ -25,24 +28,26 @@ const Register: NextPage = () => {
   };
 
   return (
-    <Container pt={10}>
-      <Box as="form" onSubmit={handleSubmit}>
-        <Input type="email" name="email" placeholder="Email" />
-        <Input type="password" name="password" placeholder="Password" />
-        <Button mt={4} type="submit">
-          Login
-        </Button>
-      </Box>
-      <Text>
-        {"Don't have an account?"}
-        <Link href="/auth/register">
-          <ChakraLink ml={2} color="blue.600">
+    <>
+      <Header />
+      <Container pt={10}>
+        <Title>Login</Title>
+        <Box as="form" onSubmit={handleSubmit} mt={5} display="flex" flexDirection="column" gap="1rem">
+          <Input type="email" name="email" placeholder="Email" />
+          <Input type="password" name="password" placeholder="Password" />
+          <CustomButton mt={2} type="submit" bg="gray.100" p="10px 0" textAlign="center" fontWeight="600">
+            Login
+          </CustomButton>
+        </Box>
+        <Text mt={5}>
+          {"Don't have an account?"}
+          <CustomButton href="/auth/register" asLink ml={2}>
             Register
-          </ChakraLink>
-        </Link>
-      </Text>
-      {err && <Text color="red.500">Something went wrong</Text>}
-    </Container>
+          </CustomButton>
+        </Text>
+        {err && <Text color="red.500">Something went wrong</Text>}
+      </Container>
+    </>
   );
 };
 

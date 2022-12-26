@@ -29,7 +29,7 @@ export default function CustomButton({
           fontSize="0.9rem"
           fontWeight="semibold"
           _hover={{ color: "white", bg: "black", textDecoration: "none" }}
-          _active={{ bg: "blue.500" }}
+          _active={{ bg: "black" }}
           userSelect="none"
           {...props}
         >
@@ -49,7 +49,7 @@ export default function CustomButton({
       fontSize="0.9rem"
       fontWeight="semibold"
       _hover={{ color: "white", bg: "black", textDecoration: "none" }}
-      _active={{ bg: "blue.500" }}
+      _active={{ bg: "black" }}
       userSelect="none"
       onClick={onClickFunc}
       {...props}

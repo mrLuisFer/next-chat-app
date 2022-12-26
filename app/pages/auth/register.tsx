@@ -6,6 +6,8 @@ import { UserCredential, createUserWithEmailAndPassword, updateProfile } from "f
 import { auth, storage, db } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
+import Header from "../../components/shared/Header";
+import Title from "../../components/shared/Title";
 
 const Register: NextPage = () => {
   const [error, setError] = useState(false);
@@ -58,26 +60,30 @@ const Register: NextPage = () => {
   };
 
   return (
-    <Container pt={10}>
-      <Box as="form" onSubmit={handleSubmit}>
-        <Input type="text" name="displayName" placeholder="Name" />
-        <Input type="email" name="email" placeholder="Email" />
-        <Input type="password" name="password" placeholder="Password" />
-        <Input type="file" name="avatar" />
-        <Button mt={4} type="submit">
-          Register
-        </Button>
-      </Box>
-      <Text>
-        Already have an account?
-        <Link href="/auth/login">
-          <ChakraLink ml={2} color="blue.600">
-            Login
-          </ChakraLink>
-        </Link>
-      </Text>
-      {error && <Text color="red.500">Something went wrong</Text>}
-    </Container>
+    <>
+      <Header />
+      <Container pt={10}>
+        <Title>Register</Title>
+        <Box as="form" onSubmit={handleSubmit} mt={5}>
+          <Input type="text" name="displayName" placeholder="Name" />
+          <Input type="email" name="email" placeholder="Email" />
+          <Input type="password" name="password" placeholder="Password" />
+          <Input type="file" name="avatar" />
+          <Button mt={4} type="submit">
+            Register
+          </Button>
+        </Box>
+        <Text>
+          Already have an account?
+          <Link href="/auth/login">
+            <ChakraLink ml={2} color="blue.600">
+              Login
+            </ChakraLink>
+          </Link>
+        </Text>
+        {error && <Text color="red.500">Something went wrong</Text>}
+      </Container>
+    </>
   );
 };
 

@@ -1,7 +1,16 @@
 import { Box, useBoolean, Fade } from "@chakra-ui/react";
+import { IconType } from "react-icons";
 import { HiHashtag } from "react-icons/hi";
 
-const HomeTittle = ({ children }: { children: any }) => {
+const HomeTittle = ({
+  children,
+  withIcon = false,
+  customIcon = <HiHashtag />,
+}: {
+  children: any;
+  withIcon?: boolean;
+  customIcon?: IconType | Element | any;
+}) => {
   const [flag, setFlag] = useBoolean();
 
   return (
@@ -21,9 +30,7 @@ const HomeTittle = ({ children }: { children: any }) => {
         opacity: "1",
       }}
     >
-      <Fade in={flag}>
-        <HiHashtag />
-      </Fade>
+      {withIcon && <Fade in={flag}>{customIcon}</Fade>}
       {children}
     </Box>
   );

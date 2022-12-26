@@ -7,19 +7,11 @@ import Image from "next/image";
 import { FormEvent, useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { BiTrashAlt } from "react-icons/bi";
-import HomeTittle from "../Title";
-
-const ContactFlex = ({ children }: { children: any }) => {
-  return (
-    <Box display="flex" alignItems="center" justifyContent="space-evenly" gap="6rem" mb="2rem">
-      {children}
-    </Box>
-  );
-};
+import ContactFlex from "./ContactFlex";
 
 type BtnStatus = "submitting" | "none" | "completed";
 
-export default function ContactHomeSection() {
+export default function ContactForm() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [msg, setMsg] = useState<string>("");
@@ -76,8 +68,7 @@ export default function ContactHomeSection() {
   };
 
   return (
-    <Box id="contactus">
-      <HomeTittle>Contact</HomeTittle>
+    <>
       <Box display="flex" justifyContent="center">
         <Heading as="h2" fontWeight="semibold" lineHeight="1.5" mb="1rem" textAlign="center">
           Love to hear from you,{" "}
@@ -132,8 +123,34 @@ export default function ContactHomeSection() {
               resize="none"
               name="message"
               size="md"
+              _focus={{ borderColor: "black" }}
+              _hover={{ borderColor: "black" }}
             />
           </FormControl>
+        </ContactFlex>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Box
+            as="button"
+            display="flex"
+            type="button"
+            alignItems="center"
+            gridGap="0.5rem"
+            fontSize="0.9rem"
+            w="fit-content"
+            p="0.5rem 1rem"
+            transition="0.15s ease"
+            cursor="default"
+            borderRadius="1px"
+            fontWeight="semibold"
+            _hover={{ bg: "black", color: "white", borderRadius: "8px" }}
+            onClick={() => {
+              clearInputs();
+              setBtnStatus("none");
+            }}
+          >
+            <BiTrashAlt />
+            Clear all inputs
+          </Box>
           <Box
             as="button"
             bg={btnStatus === "completed" ? "green.400" : "black"}
@@ -165,30 +182,8 @@ export default function ContactHomeSection() {
             {renderSwitch(btnStatus)}
             {btnStatus === "completed" ? "Completed" : "Just send"}
           </Box>
-        </ContactFlex>
-        <Box
-          as="button"
-          display="flex"
-          type="button"
-          alignItems="center"
-          gridGap="0.5rem"
-          fontSize="0.9rem"
-          w="fit-content"
-          p="0.5rem 1rem"
-          transition="0.15s ease"
-          cursor="default"
-          borderRadius="1px"
-          fontWeight="semibold"
-          _hover={{ bg: "black", color: "white", borderRadius: "8px" }}
-          onClick={() => {
-            clearInputs();
-            setBtnStatus("none");
-          }}
-        >
-          <BiTrashAlt />
-          Clear all inputs
         </Box>
       </Box>
-    </Box>
+    </>
   );
 }
