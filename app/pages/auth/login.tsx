@@ -35,9 +35,15 @@ const Register: NextPage = () => {
         <Box as="form" onSubmit={handleSubmit} mt={5} display="flex" flexDirection="column" gap="1rem">
           <Input type="email" name="email" placeholder="Email" />
           <Input type="password" name="password" placeholder="Password" />
-          <CustomButton mt={2} type="submit" bg="gray.100" p="10px 0" textAlign="center" fontWeight="600">
+          {/* <CustomButton mt={2} type="submit" bg="gray.100" p="10px 0" textAlign="center" fontWeight="600">
             Login
-          </CustomButton>
+          </CustomButton> */}
+          <button
+            type="submit"
+            className="w-32 bg-black text-white rounded-md py-2 font-bold transition active:scale-95"
+          >
+            Login
+          </button>
         </Box>
         <Text mt={5}>
           {"Don't have an account?"}

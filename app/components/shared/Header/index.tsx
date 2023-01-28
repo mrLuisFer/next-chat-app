@@ -1,4 +1,4 @@
-import { Box, List, Text, useColorMode } from "@chakra-ui/react";
+import { Box, List, Text, Tooltip, useColorMode } from "@chakra-ui/react";
 import { IoChatbubbleEllipses } from "react-icons/io5";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { TiLightbulb } from "react-icons/ti";
@@ -15,6 +15,11 @@ const routesObj = {
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const router = useRouter();
+
+  const handleDarkMode = () => {
+    toggleColorMode();
+    document.querySelector("html")?.classList.toggle("dark");
+  };
 
   console.log(router);
   return (
@@ -39,7 +44,7 @@ const Header = () => {
           color={router.asPath === routesObj.root ? "white" : ""}
         >
           <IoChatbubbleEllipses size={20} />
-          Chat App
+          {router.asPath === routesObj.root ? "Chat App" : "Home"}
         </CustomButton>
         <List as="ul" display="flex" alignItems="center" gridGap="1.4rem">
           <CustomButton
@@ -69,9 +74,13 @@ const Header = () => {
         >
           Login
         </CustomButton>
-        <CustomButton onClick={toggleColorMode}>
-          {colorMode === "light" ? <BsMoonStarsFill size={15} /> : <TiLightbulb size={20} />}
-        </CustomButton>
+        <Tooltip label="Not stable yet" hasArrow>
+          <Box position="relative">
+            <CustomButton onClick={handleDarkMode}>
+              {colorMode === "light" ? <BsMoonStarsFill size={15} /> : <TiLightbulb size={20} />}
+            </CustomButton>
+          </Box>
+        </Tooltip>
       </Box>
     </Box>
   );

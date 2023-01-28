@@ -1,12 +1,26 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import Header from "../components/shared/Header";
 import { useUserContext } from "../hooks/useUserContext";
+import Image from "next/image";
+import { useEffect } from "react";
 
 const Home: NextPage = () => {
   const { user } = useUserContext();
   console.log(user);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   return (
     <>
@@ -17,11 +31,23 @@ const Home: NextPage = () => {
       </Head>
       <Box as="main">
         <Header />
-        <Box as="section" p="1rem 3rem" minH="100vh"></Box>
-        <Box p="3rem 3rem 0" fontSize="0.8rem">
-          <Box as="footer" color="blackAlpha.500" borderTop="1px solid" borderColor="gray.300" p="1rem 0 2rem">
-            <Text userSelect="none">2022 Chat. All rights reserved.</Text>
-          </Box>
+        <Box as="section" minH="100vh" display="flex" gap="2rem" justifyContent="space-between">
+          <div className="pl-11 h-screen flex flex-col items-center justify-center gap-10 w-1/2">
+            <h1 className="font-bold text-6xl m-0 text-gray-800 dark:text-gray-200">
+              Welcome to a Next <span className="text-black dark:text-white">Chat</span>
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 m-0">
+              In this chat you can Chat with your friends about everything.
+            </p>
+          </div>
+          <div className="relative w-1/2 h-screen select-none object-cover">
+            <Image
+              src="https://images.unsplash.com/photo-1528716321680-815a8cdb8cbe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8bWVzc2FnZXN8ZW58MHwxfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+              alt="A message that says 'Difficult roads lead to beautiful destinations', with a plant in the side"
+              layout="fill"
+              draggable={false}
+            />
+          </div>
         </Box>
       </Box>
     </>

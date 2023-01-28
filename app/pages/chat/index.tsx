@@ -8,7 +8,7 @@ import { useUserContext } from "../../hooks/useUserContext";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const socket = io("http://localhost:3001");
+const socket = io("http://localhost:3002");
 
 const ChatPage: NextPage = () => {
   const router = useRouter();
