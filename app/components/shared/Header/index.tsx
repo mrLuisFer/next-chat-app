@@ -1,4 +1,4 @@
-import { Box, List, Text, Tooltip, useColorMode } from "@chakra-ui/react";
+import { Box, List, Tooltip, useColorMode } from "@chakra-ui/react";
 import { IoChatbubbleEllipses } from "react-icons/io5";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { TiLightbulb } from "react-icons/ti";
@@ -12,14 +12,14 @@ const routesObj = {
   register: "/auth/register",
 };
 
-const Header = () => {
+const Header = (): JSX.Element => {
   const { colorMode, toggleColorMode } = useColorMode();
   const router = useRouter();
 
-  const handleDarkMode = () => {
+  const handleDarkMode = (): void => {
     toggleColorMode();
     document.querySelector("html")?.classList.toggle("dark");
-    const isDarkMode = document.querySelector("html")!.classList.contains("dark");
+    const isDarkMode: boolean = document.querySelector("html")?.classList.contains("dark") ?? false;
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
   };
 

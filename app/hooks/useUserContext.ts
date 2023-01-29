@@ -1,9 +1,15 @@
-import { useContext } from "react";
+import { type Dispatch, type SetStateAction, useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { type User } from "@supabase/supabase-js";
 
-export const useUserContext = () => {
+interface UseUserContextReturn {
+  user: User;
+  setUser: Dispatch<SetStateAction<User>>;
+}
+
+export const useUserContext = (): UseUserContextReturn => {
   const { user, setUser } = useContext(UserContext);
-  if (!user && !setUser) throw new Error("useUserContext must be used within a UserContextProvider.");
+  if (user == null && setUser == null) throw new Error("useUserContext must be used within a UserContextProvider.");
 
   return { user, setUser };
 };

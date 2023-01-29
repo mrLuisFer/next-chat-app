@@ -2,39 +2,39 @@ import { Box, Text, Heading, Textarea, FormControl, FormLabel } from "@chakra-ui
 import ContactInput from "./ContactInput";
 import { FaHourglassEnd } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
-import { BiCheck } from "react-icons/bi";
+import { BiCheck, BiTrashAlt } from "react-icons/bi";
 import Image from "next/image";
-import { FormEvent, useState, useRef } from "react";
+import { type FormEvent, useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
-import { BiTrashAlt } from "react-icons/bi";
 import ContactFlex from "./ContactFlex";
 
 type BtnStatus = "submitting" | "none" | "completed";
 
-export default function ContactForm() {
+export default function ContactForm(): JSX.Element {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [msg, setMsg] = useState<string>("");
   const [btnStatus, setBtnStatus] = useState<BtnStatus>("none");
   const formRef = useRef<any>();
 
-  const emailRegex = new RegExp("[^@ \t\r\n]+@[^@ \t\r\n]+.[^@ \t\r\n]+");
+  const emailRegex = /[^@ \t\r\n]+@[^@ \t\r\n]+.[^@ \t\r\n]+/;
   const emailErr: boolean = !emailRegex.test(email);
   const nameErr: boolean = !(name.length === 0) && name.length <= 2;
   const msgErr: boolean = msg.length <= 5;
   const invalidBtn: boolean = emailErr || nameErr || msgErr;
 
-  const clearInputs = () => {
+  const clearInputs = (): void => {
     setName("");
     setEmail("");
     setMsg("");
   };
 
-  const handleSubmit = (e: FormEvent<HTMLElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLElement>): void => {
     e.preventDefault();
     setBtnStatus("submitting");
 
     emailjs
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       .sendForm(`${process.env.SERVICE_ID}`, `${process.env.TEMPLATE_ID}`, formRef.current, `${process.env.EMAIL_KEY}`)
       .then(
         (result: any) => {
@@ -45,7 +45,7 @@ export default function ContactForm() {
               setBtnStatus("none");
             }, 2000);
 
-            return clearTimeout(timer);
+            clearTimeout(timer);
           }
         },
         (error: any) => {
@@ -54,7 +54,7 @@ export default function ContactForm() {
       );
   };
 
-  const renderSwitch = (iconStatus: BtnStatus) => {
+  const renderSwitch = (iconStatus: BtnStatus): JSX.Element => {
     switch (iconStatus) {
       case "none":
         return <IoSend />;
@@ -87,7 +87,9 @@ export default function ContactForm() {
         flexDirection="column"
         alignItems="space-between"
         m="0 auto"
-        onSubmit={(e: FormEvent<HTMLElement>) => handleSubmit(e)}
+        onSubmit={(e: FormEvent<HTMLElement>) => {
+          handleSubmit(e);
+        }}
       >
         <ContactFlex>
           <ContactInput
@@ -119,7 +121,9 @@ export default function ContactForm() {
             <Textarea
               placeholder="Write your message here pls..."
               value={msg}
-              onChange={(e) => setMsg(e.target.value)}
+              onChange={(e) => {
+                setMsg(e.target.value);
+              }}
               resize="none"
               name="message"
               size="md"
@@ -169,7 +173,9 @@ export default function ContactForm() {
             cursor="default"
             disabled={invalidBtn}
             fontWeight="semibold"
-            onClick={() => setBtnStatus("submitting")}
+            onClick={() => {
+              setBtnStatus("submitting");
+            }}
             _hover={{
               background: invalidBtn ? "" : "blue.500",
               cursor: invalidBtn ? "not-allowed" : "pointer",

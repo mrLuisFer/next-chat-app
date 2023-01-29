@@ -1,10 +1,10 @@
-import { createContext, useState, useEffect, Dispatch, SetStateAction } from "react";
+import { createContext, useState, useEffect, type Dispatch, type SetStateAction } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { fetchUserRoles } from "../lib/store";
 import { useRouter } from "next/router";
-import { Session, User } from "@supabase/supabase-js";
+import { type Session, type User } from "@supabase/supabase-js";
 
-type UserContextType = {
+interface UserContextType {
   user: User;
   setUser: Dispatch<SetStateAction<User>>;
   userLoaded: boolean;
@@ -12,49 +12,75 @@ type UserContextType = {
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
   session: Session;
-};
+}
 export const UserContext = createContext<UserContextType>(null as any);
 
-export default function UserContextProvider({ children }: { children: any }) {
-  const [user, setUser] = useState<User>({} as User);
+const userInitialState: User = {
+  id: "",
+  app_metadata: {},
+  user_metadata: {},
+  aud: "",
+  created_at: "",
+};
+
+const sessionInitialState: Session = {
+  access_token: "",
+  refresh_token: "",
+  expires_in: 0,
+  token_type: "",
+  user: userInitialState,
+};
+
+export default function UserContextProvider({ children }: { children: any }): JSX.Element {
+  const [user, setUser] = useState<User>(userInitialState);
   const [userLoaded, setUserLoaded] = useState<boolean>(false);
-  const [session, setSession] = useState<Session>({} as Session);
+  const [session, setSession] = useState<Session>(sessionInitialState);
   const [userRoles, setUserRoles] = useState([]);
 
   const router = useRouter();
-  const signIn = async () => {
-    await fetchUserRoles((userRoles: any) => setUserRoles(userRoles?.map((userRole: any) => userRole.role)));
+  const signIn = async (): Promise<void> => {
+    await fetchUserRoles((userRoles: any) => {
+      setUserRoles(userRoles?.map((userRole: any) => userRole.role));
+    });
   };
 
-  const signOut = async () => {
+  const signOut = async (): Promise<void> => {
     const { error } = await supabase.auth.signOut();
-    if (!error) {
-      router.push("/");
+    if (error != null) {
+      void router.push("/");
+    } else {
+      console.error("Error to sign out", error);
+      setUser(userInitialState);
+      setUserLoaded(false);
+      setUserRoles([]);
+      void router.push("/");
     }
   };
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session && session.user) {
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user != null) {
         setSession(session);
-        setUserLoaded(!!session);
-        signIn();
-        router.push("/channels/[id]", "/channels/1");
+        setUser(session.user);
+        const isSession: boolean = Boolean(session);
+        setUserLoaded(isSession);
+        void signIn();
+        void router.push("/channels/[id]", "/channels/1");
       }
     });
 
     const {
       data: { subscription: authListener },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session) {
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session != null) {
         setSession(session);
         const currentUser = session?.user;
         setUser(currentUser ?? null);
-        setUserLoaded(!!currentUser);
-        if (currentUser) {
+        setUserLoaded(Boolean(currentUser));
+        if (currentUser != null) {
           // signIn(currentUser.id, currentUser.email);
-          signIn();
-          router.push("/channels/[id]", "/channels/1");
+          void signIn();
+          void router.push("/channels/[id]", "/channels/1");
         }
       }
     });

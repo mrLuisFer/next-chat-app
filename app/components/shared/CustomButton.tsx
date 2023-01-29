@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { Box, ButtonProps, LinkProps } from "@chakra-ui/react";
+import { Box, type ButtonProps, type LinkProps } from "@chakra-ui/react";
 
 interface CustomButtonProps {
   asLink?: boolean;
   children: any;
   href?: string;
-  onClickFunc?: () => void | any;
+  onClickFunc?: () => any;
   [props: string]: ButtonProps | LinkProps | any;
 }
 
@@ -15,7 +15,7 @@ export default function CustomButton({
   href = "",
   onClickFunc,
   ...props
-}: CustomButtonProps) {
+}: CustomButtonProps): JSX.Element {
   if (asLink) {
     return (
       <Link href={href}>

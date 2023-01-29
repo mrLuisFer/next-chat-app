@@ -4,7 +4,7 @@ import Link from "next/link";
 import { IoSettingsSharp, IoChatbubbles } from "react-icons/io5";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { useState } from "react";
-import { IconType } from "react-icons";
+import type { IconType } from "react-icons";
 import { signOut } from "firebase/auth";
 import { auth } from "../../../firebase";
 
@@ -16,12 +16,12 @@ const hoverOpt = {
   cursor: "pointer",
 };
 
-const ProfileSidebar = () => {
+const ProfileSidebar = (): JSX.Element => {
   const router = useRouter();
 
-  const handleLogOut = () => {
-    signOut(auth);
-    router.push("/");
+  const handleLogOut = (): void => {
+    void signOut(auth);
+    void router.push("/");
   };
 
   return (
@@ -58,7 +58,7 @@ const ProfileSidebar = () => {
 };
 
 type Icon = IconType | JSX.Element | any;
-function SidebarBtn({ children, icon, onClickFunc }: { children: any; icon?: Icon; onClickFunc?: any }) {
+function SidebarBtn({ children, icon, onClickFunc }: { children: any; icon?: Icon; onClickFunc?: any }): JSX.Element {
   return (
     <Box
       as="button"
@@ -76,13 +76,14 @@ function SidebarBtn({ children, icon, onClickFunc }: { children: any; icon?: Ico
       _hover={hoverOpt}
       onClick={onClickFunc}
     >
+      {/* eslint-disable-next-line @typescript-eslint/strict-boolean-expressions */}
       {icon ? <Text fontSize="1.5rem">{icon}</Text> : <></>}
       {children}
     </Box>
   );
 }
 
-function SidebarLink({ children, href, icon }: { children: any; href: string; icon?: Icon }) {
+function SidebarLink({ children, href, icon }: { children: any; href: string; icon?: Icon }): JSX.Element {
   const router = useRouter();
   const path: boolean = router.pathname === href;
 
@@ -106,6 +107,7 @@ function SidebarLink({ children, href, icon }: { children: any; href: string; ic
         color={path ? "white" : "black"}
         _hover={hoverOpt}
       >
+        {/* eslint-disable-next-line @typescript-eslint/strict-boolean-expressions */}
         {icon ? <Text fontSize="1.5rem">{icon}</Text> : <></>}
         {children}
       </Box>
@@ -113,7 +115,7 @@ function SidebarLink({ children, href, icon }: { children: any; href: string; ic
   );
 }
 
-function SidebarTitle({ children }: { children: any }) {
+function SidebarTitle({ children }: { children: any }): JSX.Element {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
@@ -128,8 +130,12 @@ function SidebarTitle({ children }: { children: any }) {
       fontWeight="semibold"
       userSelect="none"
       opacity={isHover ? "1" : "0.7"}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
     >
       {children}
       <Box

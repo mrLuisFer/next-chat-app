@@ -1,33 +1,42 @@
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { supabase } from "./supabaseClient";
 
 /**
  * Fetch all channels
  * @param {Function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchChannels = async (setState: Dispatch<SetStateAction<any[] | null>>) => {
+export const fetchChannels = async (setState: Dispatch<SetStateAction<any[] | null>>): Promise<unknown[]> => {
   try {
-    let { data } = await supabase.from("channels").select("*");
-    if (setState) setState(data);
-    return data;
+    const { data } = await supabase.from("channels").select("*");
+    if (data != null) {
+      setState(data);
+      return data;
+    }
+    return [];
   } catch (error) {
     console.log("error", error);
+    return [];
   }
 };
 
 /**
  * Fetch a single user
- * @param {number} userId
+ * @param {number | string} userId
  * @param {function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchUser = async (userId: number, setState: Dispatch<SetStateAction<Map<any, any>>>) => {
+export const fetchUser = async (
+  userId: number | string,
+  setState: Dispatch<SetStateAction<Map<string, any>>>
+): Promise<any> => {
   try {
-    let { data } = await supabase.from("users").select(`*`).eq("id", userId);
-    let user = data && data[0];
-    if (setState) setState(new Map().set(user.id, user));
+    const { data } = await supabase.from("users").select(`*`).eq("id", userId);
+    if (data == null) return {};
+    const user = data?.[0];
+    setState(new Map().set(user.id, user));
     return user;
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
+    return {};
   }
 };
 
@@ -35,13 +44,17 @@ export const fetchUser = async (userId: number, setState: Dispatch<SetStateActio
  * Fetch all roles for the current user
  * @param {function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchUserRoles = async (setState: Dispatch<SetStateAction<any[] | null>>) => {
+export const fetchUserRoles = async (setState: Dispatch<SetStateAction<any[] | null>>): Promise<unknown[]> => {
   try {
-    let { data } = await supabase.from("user_roles").select(`*`);
-    if (setState) setState(data);
-    return data;
+    const { data } = await supabase.from("user_roles").select(`*`);
+    if (data != null) {
+      setState(data);
+      return data;
+    }
+    return [];
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
+    return [];
   }
 };
 
@@ -54,79 +67,102 @@ export const fetchMessages = async (
   channelId: number,
   handler: () => void,
   setState: Dispatch<SetStateAction<any[]>>
-) => {
+): Promise<unknown[]> => {
   try {
-    let { data } = await supabase
+    const { data } = await supabase
       .from("messages")
       // .select(`*, author:user_id(*)`)
       .select("*")
       .eq("channel_id", channelId);
 
-    if (data) {
+    if (data != null) {
       handler();
       setState(data);
+      return data;
     }
-    return data;
+
+    return [];
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
+    return [];
   }
 };
 
 /**
  * Insert a new channel into the DB
  * @param {string} slug The channel name
- * @param {number} user_id The channel creator
+ * @param {number} userId The channel creator
  */
-export const addChannel = async (slug: string, user_id: number | string) => {
+export const addChannel = async (slug: string, userId: number | string): Promise<unknown[]> => {
   try {
-    let { data } = await supabase
+    const { data } = await supabase
       .from("channels")
-      .insert([{ slug, created_by: user_id }])
+      .insert([{ slug, created_by: userId }])
       .select();
-    return data;
+
+    if (data != null) {
+      return data;
+    }
+    return [];
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
+    return [];
   }
 };
 
 /**
  * Insert a new message into the DB
  * @param {string} message The message text
- * @param {number} channel_id
- * @param {number} user_id The author
+ * @param {number} channelId
+ * @param {number} userId The author
  */
-export const addMessage = async (message: string, channel_id: number, user_id: number | string) => {
+export const addMessage = async (message: string, channelId: number, userId: number | string): Promise<unknown[]> => {
   try {
-    console.log("addMessage:", message, channel_id, user_id);
-    let { data } = await supabase.from("messages").insert([{ message, channel_id, user_id }]).select();
-    return data;
+    console.log("addMessage:", message, channelId, userId);
+    const { data } = await supabase
+      .from("messages")
+      .insert([{ message, channel_id: channelId, user_id: userId }])
+      .select();
+    if (data != null) {
+      return data;
+    }
+    return [];
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
+    return [];
   }
 };
 
 /**
  * Delete a channel from the DB
- * @param {number} channel_id
+ * @param {number} channelId
  */
-export const deleteChannel = async (channel_id: number) => {
+export const deleteChannel = async (channelId: number): Promise<unknown[]> => {
   try {
-    let { data } = await supabase.from("channels").delete().match({ id: channel_id });
-    return data;
+    const { data } = await supabase.from("channels").delete().match({ id: channelId });
+    if (data != null) {
+      return data;
+    }
+    return [];
   } catch (error) {
-    console.log("error", error);
+    console.error("error:", error);
+    return [];
   }
 };
 
 /**
  * Delete a message from the DB
- * @param {number} message_id
+ * @param {number} messageId
  */
-export const deleteMessage = async (message_id: number) => {
+export const deleteMessage = async (messageId: number): Promise<unknown[]> => {
   try {
-    let { data } = await supabase.from("messages").delete().match({ id: message_id });
-    return data;
+    const { data } = await supabase.from("messages").delete().match({ id: messageId });
+    if (data != null) {
+      return data;
+    }
+    return [];
   } catch (error) {
     console.log("error", error);
+    return [];
   }
 };

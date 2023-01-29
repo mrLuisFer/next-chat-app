@@ -1,6 +1,12 @@
 import PolicyFooter from "./PolicyFooter";
 
-export default function FormContainer({ children, titleForm }: { children: React.ReactNode | any; titleForm: string }) {
+export default function FormContainer({
+  children,
+  titleForm,
+}: {
+  children: React.ReactNode | any;
+  titleForm: string;
+}): JSX.Element {
   return (
     <>
       <div className="flex justify-center items-start pt-32">

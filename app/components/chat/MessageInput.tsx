@@ -1,13 +1,14 @@
-import { KeyboardEvent, useState } from "react";
+import type { KeyboardEvent } from "react";
+import { useState } from "react";
 
-type TMessageInputProps = {
+interface TMessageInputProps {
   onSubmit: (message: string) => void;
-};
+}
 
-const MessageInput = ({ onSubmit }: TMessageInputProps) => {
+const MessageInput = ({ onSubmit }: TMessageInputProps): JSX.Element => {
   const [messageText, setMessageText] = useState("");
 
-  const submitOnEnter = (event: KeyboardEvent<HTMLInputElement>) => {
+  const submitOnEnter = (event: KeyboardEvent<HTMLInputElement>): void => {
     // Watch for enter key
     if (event.keyCode === 13 || event.key === "Enter") {
       onSubmit(messageText);
@@ -21,8 +22,12 @@ const MessageInput = ({ onSubmit }: TMessageInputProps) => {
       type="text"
       placeholder="Send a message"
       value={messageText}
-      onChange={(e) => setMessageText(e.target.value)}
-      onKeyDown={(e) => submitOnEnter(e)}
+      onChange={(e) => {
+        setMessageText(e.target.value);
+      }}
+      onKeyDown={(e) => {
+        submitOnEnter(e);
+      }}
     />
   );
 };

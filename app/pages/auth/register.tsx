@@ -1,11 +1,11 @@
 import { Box, Input, Text } from "@chakra-ui/react";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import type { FormEvent } from "react";
 import Header from "../../components/shared/Header";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import FormContainer from "../../components/auth/FormContainer";
 
 const Register: NextPage = () => {
@@ -20,10 +20,10 @@ const Register: NextPage = () => {
 
   const loginMsgRef = useRef<HTMLAnchorElement>(null);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any): Promise<void> => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (email.length === 0 || password.length === 0) {
       setError(true);
       setTimeout(() => {
         setError(false);
@@ -45,7 +45,7 @@ const Register: NextPage = () => {
         password,
       });
 
-      if (error) {
+      if (error != null) {
         setError(true);
         // alert(`Signup Error ${error.message}`);
 
@@ -55,7 +55,7 @@ const Register: NextPage = () => {
       } else {
         setError(false);
         console.info(data);
-        router.push("/auth/confirm-email");
+        void router.push("/auth/confirm-email");
       }
     } catch (error) {
       setError(true);
@@ -63,14 +63,14 @@ const Register: NextPage = () => {
     }
   };
 
-  const handleChangePassword = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any) => {
-    const passwordRegex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$");
+  const handleChangePassword = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any): Promise<void> => {
+    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
     setPasswordError(!passwordRegex.test(e.target.value));
     setPassword(e.target.value);
   };
 
-  const handleChangeEmail = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any) => {
-    const emailRegex = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$");
+  const handleChangeEmail = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any): Promise<void> => {
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     setEmailError(!emailRegex.test(e.target.value));
     setEmail(e.target.value);
   };
@@ -93,7 +93,9 @@ const Register: NextPage = () => {
       <FormContainer titleForm="Sign Up">
         <Box
           as="form"
-          onSubmit={handleSubmit}
+          onSubmit={(e: FormEvent<HTMLElement>) => {
+            void handleSubmit(e);
+          }}
           mt={5}
           display="flex"
           alignItems="flex-start"
@@ -103,7 +105,15 @@ const Register: NextPage = () => {
           className="mx-0 mb-10"
         >
           <div className="flex flex-col w-full">
-            <Input type="email" name="email" placeholder="Email" value={email} onChange={handleChangeEmail} />
+            <Input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => {
+                void handleChangeEmail(e);
+              }}
+            />
             {emailError && (
               <Text color="red.500" mt="2px" fontSize={14}>
                 Email must be valid
@@ -116,7 +126,9 @@ const Register: NextPage = () => {
               name="password"
               placeholder="Password"
               value={password}
-              onChange={handleChangePassword}
+              onChange={(e) => {
+                void handleChangePassword(e);
+              }}
             />
             {passwordError && (
               <Text color="red.500" mt="2px" fontSize={14}>

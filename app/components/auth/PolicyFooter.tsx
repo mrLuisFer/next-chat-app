@@ -1,10 +1,10 @@
 import Link from "next/link";
 
-type TFooterLink = {
+interface TFooterLink {
   title: string;
   href: string;
   external?: boolean;
-};
+}
 
 const footerLinks: TFooterLink[] = [
   {
@@ -21,7 +21,7 @@ const footerLinks: TFooterLink[] = [
   },
 ];
 
-export default function PolicyFooter() {
+export default function PolicyFooter(): JSX.Element {
   return (
     <footer className="fixed bottom-4 mt-auto px-6">
       <div className="flex items-center gap-6">

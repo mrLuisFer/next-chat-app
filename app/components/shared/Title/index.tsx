@@ -1,5 +1,5 @@
 import { Box, useBoolean, Fade } from "@chakra-ui/react";
-import { IconType } from "react-icons";
+import { type IconType } from "react-icons";
 import { HiHashtag } from "react-icons/hi";
 
 const HomeTittle = ({
@@ -10,7 +10,7 @@ const HomeTittle = ({
   children: any;
   withIcon?: boolean;
   customIcon?: IconType | Element | any;
-}) => {
+}): JSX.Element => {
   const [flag, setFlag] = useBoolean();
 
   return (

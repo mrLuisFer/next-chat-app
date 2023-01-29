@@ -1,18 +1,16 @@
 import { Box, Input, Text } from "@chakra-ui/react";
-import { NextPage } from "next";
-import { useState } from "react";
+import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FormEvent } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import Header from "../../components/shared/Header";
 import { supabase } from "../../lib/supabaseClient";
 import FormContainer from "../../components/auth/FormContainer";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 const Register: NextPage = () => {
   const [email, setEmail] = useState<string>("");
   const [emailError, setEmailError] = useState<boolean>(false);
-
   const [password, setPassword] = useState<string>("");
   const [passwordError, setPasswordError] = useState<boolean>(false);
 
@@ -21,10 +19,9 @@ const Register: NextPage = () => {
 
   const registerMsgRef = useRef<HTMLAnchorElement>(null);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any) => {
+  const handleSubmit = async (e: FormEvent<HTMLElement>): Promise<void> => {
     e.preventDefault();
-
-    if (!email || !password) {
+    if (email.length === 0 || password.length === 0) {
       setError(true);
       setTimeout(() => {
         setError(false);
@@ -42,7 +39,7 @@ const Register: NextPage = () => {
 
     try {
       const { error, data } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
+      if (error != null) {
         setError(true);
         setTimeout(() => {
           setError(false);
@@ -50,7 +47,7 @@ const Register: NextPage = () => {
       } else {
         setError(false);
         console.log(data);
-        router.push("/channels/[id]", "/channels/1");
+        void router.push("/channels/[id]", "/channels/1");
       }
     } catch (error) {
       setError(true);
@@ -58,14 +55,14 @@ const Register: NextPage = () => {
     }
   };
 
-  const handleChangePassword = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any) => {
-    const passwordRegex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$");
+  const handleChangePassword = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
+    const passwordRegex: RegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
     setPasswordError(!passwordRegex.test(e.target.value));
     setPassword(e.target.value);
   };
 
-  const handleChangeEmail = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any) => {
-    const emailRegex = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$");
+  const handleChangeEmail = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
+    const emailRegex: RegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     setEmailError(!emailRegex.test(e.target.value));
     setEmail(e.target.value);
   };
@@ -88,7 +85,9 @@ const Register: NextPage = () => {
       <FormContainer titleForm="Login">
         <Box
           as="form"
-          onSubmit={handleSubmit}
+          onSubmit={(e: FormEvent<HTMLElement>) => {
+            void handleSubmit(e);
+          }}
           mt={5}
           display="flex"
           flexDirection="column"
@@ -96,7 +95,15 @@ const Register: NextPage = () => {
           className="mx-0 mb-10"
         >
           <div className="flex flex-col w-full">
-            <Input type="email" name="email" placeholder="Email" value={email} onChange={handleChangeEmail} />
+            <Input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                void handleChangeEmail(e);
+              }}
+            />
             {emailError && (
               <Text color="red.500" mt="2px" fontSize={14}>
                 Email must be valid
@@ -109,7 +116,9 @@ const Register: NextPage = () => {
               name="password"
               placeholder="Password"
               value={password}
-              onChange={handleChangePassword}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                void handleChangePassword(e);
+              }}
             />
             {passwordError && (
               <Text color="red.500" mt="2px" fontSize={14}>

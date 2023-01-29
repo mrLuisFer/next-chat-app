@@ -3,7 +3,7 @@ import { UserContext } from "../../../context/UserContext";
 import { deleteChannel, addChannel } from "../../../lib/store";
 import Link from "next/link";
 
-const slugify = (text: string) => {
+const slugify = (text: string): string => {
   return text
     .toString()
     .toLowerCase()
@@ -14,18 +14,18 @@ const slugify = (text: string) => {
     .replace(/-+$/, ""); // Trim - from end of text
 };
 
-type TSidebarProps = {
+interface TSidebarProps {
   channels: any[];
   activeChannelId: string;
-};
+}
 
-export default function Sidebar({ channels, activeChannelId }: TSidebarProps) {
+export default function Sidebar({ channels, activeChannelId }: TSidebarProps): JSX.Element {
   const { signOut, user, userRoles } = useContext(UserContext);
 
-  const newChannel = async () => {
+  const newChannel = async (): Promise<void> => {
     const slug = prompt("Please enter your name");
-    if (slug) {
-      addChannel(slugify(slug), user.id);
+    if (slug != null) {
+      void addChannel(slugify(slug), user.id);
     }
   };
 
@@ -38,7 +38,9 @@ export default function Sidebar({ channels, activeChannelId }: TSidebarProps) {
         <div className="p-2">
           <button
             className="bg-blue-900 hover:bg-blue-800 text-white py-2 px-4 rounded w-full transition duration-150"
-            onClick={() => newChannel()}
+            onClick={() => {
+              void newChannel();
+            }}
           >
             New Channel
           </button>
@@ -48,7 +50,9 @@ export default function Sidebar({ channels, activeChannelId }: TSidebarProps) {
           <h6 className="text-xs">{user?.email}</h6>
           <button
             className="bg-blue-900 hover:bg-blue-800 text-white py-2 px-4 rounded w-full transition duration-150"
-            onClick={() => signOut()}
+            onClick={() => {
+              void signOut();
+            }}
           >
             Log out
           </button>
@@ -71,20 +75,30 @@ export default function Sidebar({ channels, activeChannelId }: TSidebarProps) {
   );
 }
 
-type TSidebarItemProps = {
-  channel: any;
+interface TSidebarItemProps {
+  channel: {
+    id: number;
+    slug: string;
+    created_by: string;
+  };
   isActiveChannel: boolean;
   user: any;
   userRoles: string[];
-};
+}
 
-const SidebarItem = ({ channel, isActiveChannel, user, userRoles }: TSidebarItemProps) => (
+const SidebarItem = ({ channel, isActiveChannel, user, userRoles }: TSidebarItemProps): JSX.Element => (
   <li className="flex items-center justify-between">
     <Link href="/channels/[id]" as={`/channels/${channel.id}`}>
       <a className={isActiveChannel ? "font-bold" : ""}>{channel.slug}</a>
     </Link>
     {channel.id !== 1 && (channel.created_by === user?.id || userRoles.includes("admin")) && (
-      <button onClick={() => deleteChannel(channel.id)}>trash</button>
+      <button
+        onClick={() => {
+          void deleteChannel(channel.id);
+        }}
+      >
+        trash
+      </button>
     )}
   </li>
 );

@@ -1,9 +1,5 @@
-import {Box} from '@chakra-ui/react'
+import { Box } from "@chakra-ui/react";
 
-export default function Channels() {
-	return (
-		<Box bg="gray.100">
-			channels
-		</Box>
-	)
+export default function Channels(): JSX.Element {
+  return <Box bg="gray.100">channels</Box>;
 }

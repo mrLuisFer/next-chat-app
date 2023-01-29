@@ -1,9 +1,8 @@
 import type { NextPage } from "next";
-import { Box } from "@chakra-ui/react";
+import { Box, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
-import { Spinner } from "@chakra-ui/react";
 
 const ChatPage: NextPage = () => {
   const router = useRouter();
@@ -12,9 +11,9 @@ const ChatPage: NextPage = () => {
   const isNotUser = Object.keys(user).length === 0;
   useEffect(() => {
     if (isNotUser) {
-      router.push("/auth/login");
+      void router.push("/auth/login");
     } else {
-      router.push("/channels/1");
+      void router.push("/channels/1");
     }
   }, [router, isNotUser]);
 

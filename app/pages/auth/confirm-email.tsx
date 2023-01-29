@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MdArrowBackIosNew } from "react-icons/md";
 
-export default function ConfirmEmail() {
+export default function ConfirmEmail(): JSX.Element {
   return (
     <div className="bg-[url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80')] h-screen w-screen bg-no-repeat object-cover bg-cover bg-center flex items-center justify-center">
       <div className="bg-gray-900 h-screen absolute top-0 left-0 w-screen opacity-[0.6]"></div>
@@ -74,12 +74,12 @@ const ConfirmEmailBtn = ({
   label?: string;
   href: string;
   target?: boolean;
-}) => {
+}): JSX.Element => {
   return (
     <a href={href} target={target ? "_blank" : "_self"} rel="noopener noreferrer select-none" draggable={false}>
       <div className="flex items-center dark:bg-white dark:text-black justify-center gap-2 border-2 border-gray-200 px-3 py-2 rounded-lg hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-lg cursor-pointer transition active:scale-95">
-        <Image src={icon} alt="Gmail icon" width={label ? 30 : 120} height={30} />
-        {label && <span>{label}</span>}
+        <Image src={icon} alt="Gmail icon" width={label != null ? 30 : 120} height={30} />
+        {label != null && <span>{label}</span>}
       </div>
     </a>
   );

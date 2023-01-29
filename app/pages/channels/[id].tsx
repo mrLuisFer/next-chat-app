@@ -7,7 +7,7 @@ import Layout from "../../components/chat/Layout";
 import Message from "../../components/chat/Message";
 import MessageInput from "../../components/chat/MessageInput";
 
-const ChatIdPage = () => {
+const ChatIdPage = (): JSX.Element => {
   const router = useRouter();
   const { user } = useContext(UserContext);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -26,8 +26,7 @@ const ChatIdPage = () => {
   // redirect to public channel when current channel is deleted
   useEffect(() => {
     if (!channels.some((channel) => channel.id === Number(channelId))) {
-      router.push("/channels/1");
-      return;
+      void router.push("/channels/1");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channels, channelId]);
@@ -35,12 +34,16 @@ const ChatIdPage = () => {
   // validate if user exists
   useEffect(() => {
     if (Object.keys(user).length === 0) {
-      router.push("/auth/login");
+      void router.push("/auth/login");
     }
   }, [user, router]);
 
   console.info("messages", messages);
   console.info("user", user, "keys:", Object.keys(user).length);
+
+  const handleSubmitMessage = async (message: string): Promise<void> => {
+    await addMessage(message, Number(channelId), user.id);
+  };
 
   return (
     <Layout channels={channels} activeChannelId={channelId as string}>
@@ -54,7 +57,11 @@ const ChatIdPage = () => {
           </div>
         </div>
         <div className="p-2 absolute bottom-0 left-0 w-full">
-          <MessageInput onSubmit={async (text: string) => addMessage(text, Number(channelId), user.id)} />
+          <MessageInput
+            onSubmit={(message: string) => {
+              void handleSubmitMessage(message);
+            }}
+          />
         </div>
       </div>
     </Layout>

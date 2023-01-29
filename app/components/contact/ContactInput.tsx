@@ -1,5 +1,5 @@
-import { Text, FormControl, Input, FormLabel, FormHelperText, FormErrorMessage } from "@chakra-ui/react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { FormControl, Input, FormLabel, FormHelperText, FormErrorMessage } from "@chakra-ui/react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 
 interface InputProps {
   label: string;
@@ -23,9 +23,11 @@ export default function ContactInput({
   required = false,
   onError = false,
   name = "",
-}: InputProps) {
+}: InputProps): JSX.Element {
   const [focus, setFocus] = useState<boolean>(false);
-  const handleInputChange = (e: any) => setValue(e.target.value);
+  const handleInputChange = (e: any): void => {
+    setValue(e.target.value);
+  };
 
   return (
     <FormControl
@@ -40,10 +42,16 @@ export default function ContactInput({
       <Input
         type="text"
         placeholder={placeholder}
-        onChange={(e) => handleInputChange(e)}
+        onChange={(e) => {
+          handleInputChange(e);
+        }}
         value={value}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
+        onFocus={() => {
+          setFocus(true);
+        }}
+        onBlur={() => {
+          setFocus(false);
+        }}
         name={name}
         _focus={{ borderColor: "black" }}
         _hover={{ borderColor: "black" }}

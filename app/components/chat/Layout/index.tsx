@@ -1,12 +1,12 @@
 import Sidebar from "./Sidebar";
 
-type TLayoutProps = {
+interface TLayoutProps {
   channels: any[];
   children: any;
   activeChannelId: string;
-};
+}
 
-export default function Layout({ channels, children, activeChannelId }: TLayoutProps) {
+export default function Layout({ channels, children, activeChannelId }: TLayoutProps): JSX.Element {
   return (
     <main className="main flex h-screen w-screen overflow-hidden">
       <Sidebar channels={channels} activeChannelId={activeChannelId} />
