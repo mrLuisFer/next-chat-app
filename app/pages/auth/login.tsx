@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { FormEvent } from "react";
 import Header from "../../components/shared/Header";
-import CustomButton from "../../components/shared/CustomButton";
 import { supabase } from "../../lib/supabaseClient";
 import FormContainer from "../../components/auth/FormContainer";
 import { useEffect, useRef } from "react";
@@ -99,7 +98,7 @@ const Register: NextPage = () => {
           <div className="flex flex-col w-full">
             <Input type="email" name="email" placeholder="Email" value={email} onChange={handleChangeEmail} />
             {emailError && (
-              <Text color="red.500" mt="2px">
+              <Text color="red.500" mt="2px" fontSize={14}>
                 Email must be valid
               </Text>
             )}
@@ -113,7 +112,7 @@ const Register: NextPage = () => {
               onChange={handleChangePassword}
             />
             {passwordError && (
-              <Text color="red.500" mt="2px">
+              <Text color="red.500" mt="2px" fontSize={14}>
                 Password must contain at least 8 characters, including uppercase, lowercase, numbers and special
                 characters
               </Text>
@@ -125,6 +124,19 @@ const Register: NextPage = () => {
           >
             Login
           </button>
+
+          <div>
+            <button
+              className="bg-gray-700 px-4 py-2 rounded-lg active:scale-95 hover:brightness-105 hover:shadow-md"
+              type="button"
+              onClick={() => {
+                setEmail("mrluisfeer@gmail.com");
+                setPassword("@Luis21fer2121");
+              }}
+            >
+              Autocomplete
+            </button>
+          </div>
         </Box>
         {err && <Text color="red.500">Something went wrong</Text>}
         <Text

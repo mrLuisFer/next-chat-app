@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import { useStore, addMessage } from "../../lib/store";
+import { addMessage } from "../../lib/store";
+import { useStore } from "../../hooks/useStore";
 import { useContext, useEffect, useRef } from "react";
 import { UserContext } from "../../context/UserContext";
 import Layout from "../../components/chat/Layout";
@@ -38,7 +39,8 @@ const ChatIdPage = () => {
     }
   }, [user, router]);
 
-  console.log(messages);
+  console.info("messages", messages);
+  console.info("user", user, "keys:", Object.keys(user).length);
 
   return (
     <Layout channels={channels} activeChannelId={channelId as string}>

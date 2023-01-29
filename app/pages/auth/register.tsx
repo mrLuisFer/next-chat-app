@@ -105,7 +105,7 @@ const Register: NextPage = () => {
           <div className="flex flex-col w-full">
             <Input type="email" name="email" placeholder="Email" value={email} onChange={handleChangeEmail} />
             {emailError && (
-              <Text color="red.500" mt="2px">
+              <Text color="red.500" mt="2px" fontSize={14}>
                 Email must be valid
               </Text>
             )}
@@ -119,7 +119,7 @@ const Register: NextPage = () => {
               onChange={handleChangePassword}
             />
             {passwordError && (
-              <Text color="red.500" mt="2px">
+              <Text color="red.500" mt="2px" fontSize={14}>
                 Password must contain at least 8 characters, including uppercase, lowercase, numbers and special
                 characters
               </Text>

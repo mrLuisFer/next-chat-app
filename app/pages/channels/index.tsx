@@ -1,37 +1,37 @@
 import type { NextPage } from "next";
 import { Box } from "@chakra-ui/react";
-import ProfileSidebar from "../../components/chat/ProfileSidebar";
-import io from "socket.io-client";
-import ChatContent from "../../components/chat/Content";
-import Channels from "../../components/chat/Channels";
-import { useUserContext } from "../../hooks/useUserContext";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-
-const socket = io("http://localhost:3002");
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../context/UserContext";
+import { Spinner } from "@chakra-ui/react";
 
 const ChatPage: NextPage = () => {
   const router = useRouter();
-  const { user } = useUserContext();
-  console.log(user);
+  const { user } = useContext(UserContext);
 
+  const isNotUser = Object.keys(user).length === 0;
   useEffect(() => {
-    if (Object.keys(user).length === 0) {
-      router.push("/");
+    if (isNotUser) {
+      router.push("/auth/login");
+    } else {
+      router.push("/channels/1");
     }
-  }, [user]);
+  }, [router, isNotUser]);
 
-  if (Object.keys(user).length === 0) {
-    return <Box>Loading...</Box>;
+  if (isNotUser) {
+    return (
+      <Box minHeight="100vh" className="grid place-items-center">
+        <Spinner size="xl" speed="0.60s" />
+      </Box>
+    );
   }
 
   return (
-    <Box minHeight="100vh" width="100%">
-      <Box display="grid" gridTemplateColumns="250px 400px 1fr" minHeight="100vh">
-        <ProfileSidebar />
-        <Channels />
-        <ChatContent socket={socket} />
-      </Box>
+    <Box minHeight="100vh" className="grid place-items-center">
+      <div className="flex items-center justify-center">
+        <Spinner size="lg" speed="0.60s" />
+        <span>Redirecting to the chat...</span>
+      </div>
     </Box>
   );
 };
