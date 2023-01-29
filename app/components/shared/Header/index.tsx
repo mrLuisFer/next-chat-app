@@ -19,6 +19,8 @@ const Header = () => {
   const handleDarkMode = () => {
     toggleColorMode();
     document.querySelector("html")?.classList.toggle("dark");
+    const isDarkMode = document.querySelector("html")!.classList.contains("dark");
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
   };
 
   console.log(router);
@@ -32,6 +34,7 @@ const Header = () => {
       boxShadow="0 3px 3px rgba(0, 0, 0, 0.05)"
       color="blackAlpha.600"
       fontSize="1rem"
+      className="dark:bg-gray-900 dark:text-white dark:shadow-slate-500"
     >
       <Box display="flex" alignItems="center" gridGap="1rem">
         <CustomButton

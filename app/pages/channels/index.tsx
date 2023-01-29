@@ -19,7 +19,7 @@ const ChatPage: NextPage = () => {
     if (Object.keys(user).length === 0) {
       router.push("/");
     }
-  }, [user, router]);
+  }, [user]);
 
   if (Object.keys(user).length === 0) {
     return <Box>Loading...</Box>;

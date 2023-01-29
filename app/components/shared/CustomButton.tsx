@@ -32,6 +32,7 @@ export default function CustomButton({
           _active={{ bg: "black" }}
           userSelect="none"
           {...props}
+          className="dark:text-white"
         >
           {children}
         </Box>
@@ -53,6 +54,7 @@ export default function CustomButton({
       userSelect="none"
       onClick={onClickFunc}
       {...props}
+      className="dark:text-white"
     >
       {children}
     </Box>

@@ -40,7 +40,7 @@ const ProfileSidebar = () => {
           <Text>{""}</Text>
         </SidebarLink>
         <Box display="flex" flexDirection="column" gridGap="1rem" mt="3rem">
-          <SidebarLink href="/chat" icon={<IoChatbubbles />}>
+          <SidebarLink href="/channels" icon={<IoChatbubbles />}>
             Chat
           </SidebarLink>
           <SidebarLink href="/about" icon={<BsInfoCircleFill />}>

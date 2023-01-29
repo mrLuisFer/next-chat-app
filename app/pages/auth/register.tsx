@@ -1,90 +1,154 @@
-import { Box, Button, Container, Input, Text, Link as ChakraLink } from "@chakra-ui/react";
+import { Box, Input, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { UserCredential, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, storage, db } from "../../firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
 import Header from "../../components/shared/Header";
-import Title from "../../components/shared/Title";
-import CustomButton from "../../components/shared/CustomButton";
+import { supabase } from "../../lib/supabaseClient";
+import { useRouter } from "next/router";
+import { useEffect, useRef } from "react";
+import FormContainer from "../../components/auth/FormContainer";
 
 const Register: NextPage = () => {
+  const [email, setEmail] = useState<string>("");
+  const [emailError, setEmailError] = useState<boolean>(false);
+
+  const [password, setPassword] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+
   const [error, setError] = useState(false);
+  const router = useRouter();
+
+  const loginMsgRef = useRef<HTMLAnchorElement>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any) => {
     e.preventDefault();
-    const displayName = e.target[0].value;
-    const email = e.target[1].value;
-    const password = e.target[2].value;
-    const avatar = e.target[3].files[0];
-    console.log({ displayName, email, password, avatar });
+
+    if (!email || !password) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 2000);
+      return;
+    }
+
+    if (emailError || passwordError) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 2000);
+      return;
+    }
 
     try {
-      const userCredentials: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredentials.user;
-      console.log({ user });
+      const { error, data } = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
-      const date = new Date().getTime();
-      const storageRef = ref(storage, `${displayName + date}`);
-      const uploadTask = uploadBytesResumable(storageRef, avatar);
+      if (error) {
+        setError(true);
+        // alert(`Signup Error ${error.message}`);
 
-      uploadTask.on(
-        "state_changed",
-        (error) => {
-          setError(true);
-          console.log({ error });
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateProfile(user, {
-              displayName,
-              photoURL: downloadURL,
-            });
-
-            await setDoc(doc(db, "users", user.uid), {
-              uid: user.uid,
-              displayName,
-              photoURL: downloadURL,
-              email: user.email,
-            });
-
-            console.log("Upload complete");
-          });
-        }
-      );
+        setTimeout(() => {
+          setError(false);
+        }, 2000);
+      } else {
+        setError(false);
+        console.info(data);
+        router.push("/auth/confirm-email");
+      }
     } catch (error) {
       setError(true);
       console.log({ error });
     }
   };
 
+  const handleChangePassword = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any) => {
+    const passwordRegex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$");
+    setPasswordError(!passwordRegex.test(e.target.value));
+    setPassword(e.target.value);
+  };
+
+  const handleChangeEmail = async (e: FormEvent<HTMLFormElement | HTMLDivElement> | any) => {
+    const emailRegex = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$");
+    setEmailError(!emailRegex.test(e.target.value));
+    setEmail(e.target.value);
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   return (
     <>
       <Header />
-      <Container pt={10}>
-        <Title>Register</Title>
-        <Box as="form" onSubmit={handleSubmit} mt={5} display="flex" flexDirection="column" gap="1.5rem">
-          <Input type="text" name="displayName" placeholder="Name" />
-          <Input type="email" name="email" placeholder="Email" />
-          <Input type="password" name="password" placeholder="Password" />
-          <Input type="file" name="avatar" />
-          {/* <CustomButton mt={2} type="submit" bg="gray.100" p="10px 0" textAlign="center" fontWeight="600">
+      <FormContainer titleForm="Sign Up">
+        <Box
+          as="form"
+          onSubmit={handleSubmit}
+          mt={5}
+          display="flex"
+          alignItems="flex-start"
+          justifyContent="flex-start"
+          flexDirection="column"
+          gap="1.5rem"
+          className="mx-0 mb-10"
+        >
+          <div className="flex flex-col w-full">
+            <Input type="email" name="email" placeholder="Email" value={email} onChange={handleChangeEmail} />
+            {emailError && (
+              <Text color="red.500" mt="2px">
+                Email must be valid
+              </Text>
+            )}
+          </div>
+          <div className="flex flex-col w-full">
+            <Input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={handleChangePassword}
+            />
+            {passwordError && (
+              <Text color="red.500" mt="2px">
+                Password must contain at least 8 characters, including uppercase, lowercase, numbers and special
+                characters
+              </Text>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-black text-white font-bold rounded-md py-2 px-4 hover:shadow-sm active:scale-95 transition border-2 border-black dark:hover:border-white hover:border-gray-800"
+          >
             Register
-          </CustomButton> */}
-          <button>Register</button>
+          </button>
+          {error && <Text color="red.500">Something went wrong</Text>}
         </Box>
-        <Text mt="1rem">
+        <Text
+          mt="1rem"
+          className="text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 transition w-fit"
+          onClick={() => loginMsgRef.current?.focus()}
+        >
           Already have an account?
           <Link href="/auth/login">
-            <CustomButton href="/auth/register" asLink ml={2}>
+            <a
+              ref={loginMsgRef}
+              className="ml-2 bg-black text-white rounded-md px-4 py-1 cursor-pointer border-2 border-black hover:border-gray-700 dark:hover:border-gray-300 active:scale-95 transition"
+            >
               Login
-            </CustomButton>
+            </a>
           </Link>
         </Text>
-        {error && <Text color="red.500">Something went wrong</Text>}
-      </Container>
+      </FormContainer>
     </>
   );
 };
