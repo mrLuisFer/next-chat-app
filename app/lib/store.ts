@@ -58,10 +58,13 @@ export const useStore = (props: TUseStoreProps) => {
   // Update when the route changes
   useEffect(() => {
     if (props?.channelId > 0) {
-      fetchMessages(props.channelId, () => {
-        messages?.forEach((x) => users.set(x.user_id, x.author));
-        setMessages(messages);
-      });
+      fetchMessages(
+        props.channelId,
+        () => {
+          messages?.forEach((x) => users.set(x.user_id, x.author));
+        },
+        setMessages
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.channelId]);
@@ -160,17 +163,22 @@ export const fetchUserRoles = async (setState: Dispatch<SetStateAction<any[] | n
  * @param {number} channelId
  * @param {function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchMessages = async (channelId: number, setState: Dispatch<SetStateAction<any[] | null>>) => {
+export const fetchMessages = async (
+  channelId: number,
+  handler: () => void,
+  setState: Dispatch<SetStateAction<any[]>>
+) => {
   try {
     let { data } = await supabase
       .from("messages")
-      .select(`*, author:user_id(*)`)
-      .eq("channel_id", channelId)
-      .order("inserted_at", {
-        // was only true
-        ascending: true,
-      });
-    if (setState) setState(data);
+      // .select(`*, author:user_id(*)`)
+      .select("*")
+      .eq("channel_id", channelId);
+
+    if (data) {
+      handler();
+      setState(data);
+    }
     return data;
   } catch (error) {
     console.log("error", error);

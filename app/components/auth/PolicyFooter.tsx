@@ -3,6 +3,7 @@ import Link from "next/link";
 type TFooterLink = {
   title: string;
   href: string;
+  external?: boolean;
 };
 
 const footerLinks: TFooterLink[] = [
@@ -16,7 +17,7 @@ const footerLinks: TFooterLink[] = [
   },
   {
     title: "GitHub",
-    href: "",
+    href: "https://github.com/mrLuisFer/next-chat-app",
   },
 ];
 
@@ -26,7 +27,11 @@ export default function PolicyFooter() {
       <div className="flex items-center gap-6">
         {footerLinks.map((link: TFooterLink) => (
           <Link href={link.href} key={link.title}>
-            <a className="text-sm text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 transition">
+            <a
+              className="text-sm text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 transition"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {link.title}
             </a>
           </Link>

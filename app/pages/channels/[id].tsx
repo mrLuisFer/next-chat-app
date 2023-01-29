@@ -31,8 +31,15 @@ const ChatIdPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channels, channelId]);
 
-  // Render the channels and messages
-  console.log(user);
+  // validate if user exists
+  useEffect(() => {
+    if (Object.keys(user).length === 0) {
+      router.push("/auth/login");
+    }
+  }, [user, router]);
+
+  console.log(messages);
+
   return (
     <Layout channels={channels} activeChannelId={channelId as string}>
       <div className="relative h-screen">

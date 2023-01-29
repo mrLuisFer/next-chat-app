@@ -34,7 +34,7 @@ const Home: NextPage = () => {
         <Box as="section" minH="100vh" display="flex" gap="2rem" justifyContent="space-between">
           <div className="pl-11 h-screen flex flex-col items-center justify-center gap-10 w-1/2">
             <h1 className="font-bold text-6xl m-0 text-gray-800 dark:text-gray-200">
-              Welcome to a Next <span className="text-black dark:text-white">Chat</span>
+              Welcome to <span className="text-black dark:text-white">Next Chat</span>
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400 m-0">
               In this chat you can Chat with your friends about everything.
