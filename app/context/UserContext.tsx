@@ -89,6 +89,8 @@ export default function UserContextProvider({ children }: { children: any }): JS
       // authListener.subscription.unsubscribe();
       authListener.unsubscribe();
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
