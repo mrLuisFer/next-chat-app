@@ -133,19 +133,6 @@ const Register: NextPage = () => {
           >
             Login
           </button>
-
-          <div>
-            <button
-              className="bg-gray-700 px-4 py-2 rounded-lg active:scale-95 hover:brightness-105 hover:shadow-md"
-              type="button"
-              onClick={() => {
-                setEmail("mrluisfeer@gmail.com");
-                setPassword("@Luis21fer2121");
-              }}
-            >
-              Autocomplete
-            </button>
-          </div>
         </Box>
         {err && <Text color="red.500">Something went wrong</Text>}
         <Text
