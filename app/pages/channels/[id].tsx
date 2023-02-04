@@ -47,16 +47,14 @@ const ChatIdPage = (): JSX.Element => {
 
   return (
     <Layout channels={channels} activeChannelId={channelId as string}>
-      <div className="relative h-screen">
-        <div className="h-full pb-16">
-          <div className="p-2 overflow-y-auto">
-            {messages.map((x) => (
-              <Message key={x.id} message={x} />
-            ))}
-            <div ref={messagesEndRef} style={{ height: 0 }} />
-          </div>
+      <div>
+        <div className="py-2 overflow-y-auto max-h-[800px]">
+          {messages.map((x) => (
+            <Message key={x.id} message={x} />
+          ))}
+          <div ref={messagesEndRef} className="h-0" />
         </div>
-        <div className="p-2 absolute bottom-0 left-0 w-full">
+        <div className="absolute bottom-0 left-0 w-full">
           <MessageInput
             onSubmit={(message: string) => {
               void handleSubmitMessage(message);

@@ -35,8 +35,9 @@ export default function Sidebar({ channels, activeChannelId }: TSidebarProps): J
 
   const newChannel = async (): Promise<void> => {
     const slug = prompt("Please enter your name");
+    const description = prompt("Please enter a description");
     if (slug != null) {
-      void addChannel(slugify(slug), user.id);
+      void addChannel(slugify(slug), user.id, description);
     }
   };
 
@@ -48,12 +49,12 @@ export default function Sidebar({ channels, activeChannelId }: TSidebarProps): J
   }, [channels]);
 
   return (
-    <nav className="w-[400px] bg-gray-100 text-gray-900 overflow-y-hidden overflow-x-hidden max-h-screen flex flex-col justify-between">
-      <div className="py-4">
-        <div className="mb-6 border-b-2 border-gray-200 pb-4 px-4 flex items-center justify-between">
-          <Tooltip label="Reload page" hasArrow>
+    <nav className="w-[400px] bg-gray-100 dark:bg-slate-900 text-gray-900 overflow-y-hidden overflow-x-hidden max-h-screen flex flex-col justify-between transition shadow-md hover:shadow-xl">
+      <div>
+        <div className="mb-6 border-b-2 border-gray-200 h-[80px] px-4 flex items-center justify-between shadow-sm">
+          <Tooltip label="Reload page" hasArrow bg="blue.200">
             <div
-              className="flex items-center gap-1 w-fit cursor-pointer select-none hover:bg-gray-200 p-2 rounded-lg transition"
+              className="flex items-center gap-1 w-fit cursor-pointer select-none hover:bg-gray-200 active:bg-blue-200 p-2 rounded-lg transition"
               onClick={() => {
                 router.reload();
               }}
@@ -108,6 +109,7 @@ export default function Sidebar({ channels, activeChannelId }: TSidebarProps): J
               height: showChannels ? "auto" : 0,
               opacity: showChannels ? 1 : 0,
               translateY: showChannels ? 0 : -15,
+              display: showChannels ? "block" : "none",
             }}
           >
             {channelsState.map((x) => (
@@ -122,8 +124,8 @@ export default function Sidebar({ channels, activeChannelId }: TSidebarProps): J
           </Reorder.Group>
         </div>
       </div>
-      <div className="p-4 hover:bg-gray-200 border-t-2 border-gray-200 rounded-t-xl flex items-center justify-between transition cursor-pointer">
-        <div className="flex items-center gap-2 p-2 hover:bg-gray-300 rounded group transition">
+      <div className="p-4 hover:bg-gray-200 border-t-2 border-gray-200 rounded-t-xl flex items-center justify-between transition">
+        <div className="flex items-center gap-2 p-2 hover:bg-gray-300 rounded-lg group transition active:shadow-md select-none cursor-pointer">
           <Avatar name={user?.email} />
           <div>
             <h2 className="text-gray-400 group-hover:text-gray-700">
@@ -135,14 +137,14 @@ export default function Sidebar({ channels, activeChannelId }: TSidebarProps): J
           </div>
         </div>
         <div className="flex items-center gap-2 text-lg">
-          <Tooltip label="Open settings" hasArrow>
-            <button className="p-2 hover:bg-gray-300 rounded-2xl cursor-pointer transition hover:text-green-600">
+          <Tooltip label="Open settings" hasArrow bg="green.200">
+            <button className="p-2 hover:bg-gray-300 rounded-2xl cursor-pointer transition hover:text-green-600 active:shadow-sm">
               <IoSettingsSharp />
             </button>
           </Tooltip>
-          <Tooltip label="Log out" hasArrow>
+          <Tooltip label="Log out" hasArrow bg="red.200">
             <button
-              className="p-2 hover:bg-gray-300 rounded-2xl cursor-pointer transition hover:text-red-500"
+              className="p-2 hover:bg-gray-300 rounded-2xl cursor-pointer transition hover:text-red-500 active:shadow-md"
               onClick={() => {
                 void signOut();
               }}

@@ -68,8 +68,9 @@ export const useStore = (props: TUseStoreProps): UseStoreReturn => {
       const messagesHandler = (): void => {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         messages?.forEach(async (x) => {
-          await fetchUser(x.user_id, setUsers);
-          setUsers(new Map(users.set(x.user_id, users)));
+          await fetchUser(x.user_id, (user) => {
+            setUsers(new Map(users.set(x.user_id, user)));
+          });
         });
       };
 
@@ -88,7 +89,7 @@ export const useStore = (props: TUseStoreProps): UseStoreReturn => {
         const isNotAuthorId: boolean = !users.has(authorId);
         if (isNotAuthorId)
           await fetchUser(authorId, (user) => {
-            handleNewOrUpdatedUser(user as any);
+            handleNewOrUpdatedUser(user);
           });
         setMessages(messages.concat(newMessage));
       };

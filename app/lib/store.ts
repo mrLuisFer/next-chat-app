@@ -19,20 +19,16 @@ export const fetchChannels = async (setState: Dispatch<SetStateAction<any[] | nu
   }
 };
 
-/**
- * Fetch a single user
- * @param {number | string} userId
- * @param {function} setState Optionally pass in a hook or callback to set the state
- */
-export const fetchUser = async (
-  userId: number | string,
-  setState: Dispatch<SetStateAction<Map<string, any>>>
-): Promise<any> => {
+/** Fetch a single user */
+export const fetchUser = async (userId: number | string, callback?: (user: any) => void): Promise<any> => {
   try {
     const { data } = await supabase.from("users").select(`*`).eq("id", userId);
     if (data == null) return {};
     const user = data?.[0];
-    setState(new Map().set(user.id, user));
+    // setState(new Map().set(user.id, user));
+    if (callback != null) {
+      callback(user);
+    }
     return user;
   } catch (error) {
     console.error("error", error);
@@ -93,11 +89,15 @@ export const fetchMessages = async (
  * @param {string} slug The channel name
  * @param {number} userId The channel creator
  */
-export const addChannel = async (slug: string, userId: number | string): Promise<unknown[]> => {
+export const addChannel = async (
+  slug: string,
+  userId: number | string,
+  description: string | null
+): Promise<unknown[]> => {
   try {
     const { data } = await supabase
       .from("channels")
-      .insert([{ slug, created_by: userId }])
+      .insert([{ slug, created_by: userId, description }])
       .select();
 
     if (data != null) {

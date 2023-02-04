@@ -1,9 +1,10 @@
-import { Box, List, Tooltip, useColorMode } from "@chakra-ui/react";
+import { Box, List, Tooltip } from "@chakra-ui/react";
 import { IoChatbubbleEllipses } from "react-icons/io5";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { TiLightbulb } from "react-icons/ti";
 import CustomButton from "../CustomButton";
 import { useRouter } from "next/router";
+import { useSetDarkMode } from "../../../hooks/useSetDarkMode";
 
 const routesObj = {
   root: "/",
@@ -13,15 +14,8 @@ const routesObj = {
 };
 
 const Header = (): JSX.Element => {
-  const { colorMode, toggleColorMode } = useColorMode();
   const router = useRouter();
-
-  const handleDarkMode = (): void => {
-    toggleColorMode();
-    document.querySelector("html")?.classList.toggle("dark");
-    const isDarkMode: boolean = document.querySelector("html")?.classList.contains("dark") ?? false;
-    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-  };
+  const { handleDarkMode, chakraColorMode } = useSetDarkMode();
 
   console.log(router);
   return (
@@ -80,7 +74,7 @@ const Header = (): JSX.Element => {
         <Tooltip label="Not stable yet" hasArrow>
           <Box position="relative">
             <CustomButton onClick={handleDarkMode}>
-              {colorMode === "light" ? <BsMoonStarsFill size={15} /> : <TiLightbulb size={20} />}
+              {chakraColorMode === "light" ? <BsMoonStarsFill size={15} /> : <TiLightbulb size={20} />}
             </CustomButton>
           </Box>
         </Tooltip>

@@ -1,3 +1,4 @@
+import Navbar from "../Navbar";
 import Sidebar from "./Sidebar";
 
 interface TLayoutProps {
@@ -10,7 +11,10 @@ export default function Layout({ channels, children, activeChannelId }: TLayoutP
   return (
     <main className="main flex h-screen w-screen overflow-hidden">
       <Sidebar channels={channels} activeChannelId={activeChannelId} />
-      <div className="flex-1 bg-gray-800 h-screen">{children}</div>
+      <div className="flex-1 bg-zinc-50 h-screen relative">
+        <Navbar activeChannelId={activeChannelId} channels={channels} />
+        {children}
+      </div>
     </main>
   );
 }
