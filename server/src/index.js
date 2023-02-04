@@ -15,7 +15,7 @@ const io = new SocketServer(server, {
   },
 })
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3002
 
 // Middlewares
 app.use(cors())

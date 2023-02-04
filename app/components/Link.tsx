@@ -7,7 +7,7 @@ interface LinkProps {
   [styles: string]: any;
 }
 
-export default function Link({ to, children, ...styles }: LinkProps) {
+export default function Link({ to, children, ...styles }: LinkProps): JSX.Element {
   return (
     <NextLink href={to}>
       <ChakraLink {...styles}>{children}</ChakraLink>

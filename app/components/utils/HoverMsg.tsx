@@ -10,7 +10,7 @@ interface HoverMsgProps {
   left: string;
 }
 
-export default function HoverMsg({ msg, w, h, top, left, children }: HoverMsgProps) {
+export default function HoverMsg({ msg, w, h, top, left, children }: HoverMsgProps): JSX.Element {
   const [showMsg, setShowMsg] = useState<boolean>(false);
 
   return (
@@ -18,18 +18,22 @@ export default function HoverMsg({ msg, w, h, top, left, children }: HoverMsgPro
       position="relative"
       display="inline-block"
       w="fit-content"
-      onMouseEnter={() => setShowMsg(true)}
-      onMouseLeave={() => setShowMsg(false)}
+      onMouseEnter={() => {
+        setShowMsg(true);
+      }}
+      onMouseLeave={() => {
+        setShowMsg(false);
+      }}
     >
       {children}
       {showMsg && (
         <Fade in={showMsg}>
           <Box
             position="absolute"
-            w={w || "fit-content"}
-            h={h || "fit-content"}
-            top={top || "0"}
-            left={left || "0"}
+            w={w ?? "fit-content"}
+            h={h ?? "fit-content"}
+            top={top ?? "0"}
+            left={left ?? "0"}
             bg="black"
             color="white"
             p="0.5rem 1rem"
