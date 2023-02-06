@@ -2,13 +2,14 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Box } from "@chakra-ui/react";
 import Header from "../components/shared/Header";
-import { useUserContext } from "../hooks/useUserContext";
 import Image from "next/image";
 import { useEffect } from "react";
+import { BiLogInCircle } from "react-icons/bi";
+import { SlLogin } from "react-icons/sl";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
-  const { user } = useUserContext();
-  console.log(user);
+  const router = useRouter();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -32,15 +33,45 @@ const Home: NextPage = () => {
       <Box as="main">
         <Header />
         <Box as="section" minH="100vh" display="flex" gap="2rem" justifyContent="space-between">
-          <div className="pl-11 h-screen flex flex-col items-center justify-center gap-10 w-1/2">
-            <h1 className="font-bold text-6xl m-0 text-gray-800 dark:text-gray-200">
+          <div className="h-screen mt-12 md:mt-0 flex flex-col items-center justify-start md:justify-center gap-4 md:gap-10 w-full lg:w-1/2 px-6 md:p-8 lg:pl-11">
+            <h1 className="font-bold text-5xl md:text-6xl m-0 text-gray-800 dark:text-gray-200">
               Welcome to <span className="text-black dark:text-white">Next Chat</span>
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400 m-0">
               In this chat you can Chat with your friends about everything.
             </p>
+            <div className="flex flex-col justify-start lg:items-center w-full lg:w-auto">
+              <p className="text-gray-500 mb-4 mt-6 flex-1 text-left w-full">Let&apos;s get started</p>
+              <button
+                className="p-4 bg-blue-600 text-white rounded-xl transition font-bold text-lg group flex items-center justify-center gap-2 max-w-[300px] lg:w-[400px] lg:max-w-[400px]"
+                onClick={() => {
+                  void router.push("/auth/login");
+                }}
+              >
+                Log In
+                <span className="opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition">
+                  <BiLogInCircle size="1.5rem" />
+                </span>
+              </button>
+              <div className="group">
+                <p className="text-gray-500 mb-0 mt-8 text-left w-full group-hover:text-gray-400">
+                  Doesn&apos;t have an account?
+                </p>
+                <button
+                  className="p-3 rounded-xl bg-black text-white transition font-bold text-lg opacity-70 group-hover:opacity-100 flex items-center justify-center gap-2 max-w-[300px] lg:w-[400px] lg:max-w-[400px]"
+                  onClick={() => {
+                    void router.push("/auth/register");
+                  }}
+                >
+                  Sign Up
+                  <span className="opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition">
+                    <SlLogin size="1.2rem" />
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="relative w-1/2 h-screen select-none object-cover">
+          <div className="hidden lg:block relative w-1/2 h-screen select-none object-cover">
             <Image
               src="https://images.unsplash.com/photo-1528716321680-815a8cdb8cbe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8bWVzc2FnZXN8ZW58MHwxfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
               alt="A message that says 'Difficult roads lead to beautiful destinations', with a plant in the side"
