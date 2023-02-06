@@ -33,9 +33,9 @@ export default function Navbar({ activeChannelId, channels }: INavbarProps): JSX
 
   console.log({ currentChannel });
   return (
-    <nav className="bg-gray-100 dark:bg-slate-900 px-4 h-[80px] text-zinc-900 shadow-sm transition flex items-center justify-between border-b-2 border-gray-200">
+    <nav className="bg-gray-100 dark:bg-slate-800 px-4 h-[80px] text-zinc-900 dark:text-zinc-200 shadow-sm transition flex items-center justify-between border-b-2 border-gray-200 dark:border-gray-500">
       <div className="flex items-center gap-3">
-        <button className="flex items-center font-bold gap-2 text-xl transition px-2 py-2 hover:bg-gray-200 rounded-xl cursor-pointer select-none hover:shadow-sm active:shadow-md">
+        <button className="flex items-center font-bold gap-2 text-xl transition px-2 py-2 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-xl cursor-pointer select-none hover:shadow-sm active:shadow-md">
           <FaSlackHash />
           <span>{currentChannel?.slug}</span>
           <IoIosArrowDown />
@@ -57,7 +57,10 @@ export default function Navbar({ activeChannelId, channels }: INavbarProps): JSX
         )}
       </div>
       <div className="pr-6 flex items-center gap-2">
-        <button className="p-2 hover:bg-gray-200 rounded-full transition text-sky-500" onClick={handleDarkMode}>
+        <button
+          className="p-2 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-full transition text-sky-500"
+          onClick={handleDarkMode}
+        >
           {chakraColorMode === "light" ? (
             <motion.div
               initial={{ transform: "rotate(0deg)" }}
@@ -77,12 +80,12 @@ export default function Navbar({ activeChannelId, channels }: INavbarProps): JSX
           )}
         </button>
         <Tooltip label="Open settings" hasArrow bg="green.400">
-          <button className="p-2 hover:bg-gray-200 rounded-full cursor-pointer transition text-green-500 active:shadow-sm text-lg">
+          <button className="p-2 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-full cursor-pointer transition text-green-500 active:shadow-sm text-lg">
             <IoSettingsSharp />
           </button>
         </Tooltip>
         <Tooltip label="Help" hasArrow>
-          <button className="p-2 hover:bg-gray-200 rounded-full cursor-pointer transition text-blue-500 active:shadow-sm text-xl">
+          <button className="p-2 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-full cursor-pointer transition text-blue-500 dark:text-blue-400 active:shadow-sm text-xl">
             <BiHelpCircle />
           </button>
         </Tooltip>

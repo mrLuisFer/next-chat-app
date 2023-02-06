@@ -30,17 +30,31 @@ const SidebarChannelItem = ({ channel, isActiveChannel, user, userRoles }: TSide
       >
         <div
           className={`${
-            isActiveChannel ? "font-bold text-blue-500 bg-slate-200" : "text-gray-700 font-semibold"
-          } hover:bg-gray-200 w-full pl-6 pr-2 cursor-pointer active:cursor-move transition group select-none rounded-lg flex items-center justify-between`}
+            isActiveChannel
+              ? "font-bold text-blue-500 bg-slate-200 dark:text-sky-400 dark:bg-gray-700"
+              : "text-gray-700 dark:text-gray-200 dark:hover:text-gray-200"
+          } hover:bg-gray-200 dark:hover:bg-slate-700 w-full pl-6 pr-2 cursor-pointer active:cursor-move transition group select-none rounded-lg flex items-center justify-between font-semibold`}
         >
           <Link href="/channels/[id]" as={`/channels/${channel.id}`}>
             <a draggable={false} className="flex gap-3 py-3 items-center w-full">
               <Tooltip label="Public channel" hasArrow>
-                <Box className={isActiveChannel ? "group-hover:brightness-105" : "group-hover:text-black"}>
+                <Box
+                  className={
+                    isActiveChannel
+                      ? "group-hover:brightness-105"
+                      : "group-hover:text-black dark:group-hover:text-gray-100"
+                  }
+                >
                   <FaSlackHash />
                 </Box>
               </Tooltip>
-              <span className={isActiveChannel ? "group-hover:brightness-105" : "group-hover:text-black"}>
+              <span
+                className={
+                  isActiveChannel
+                    ? "group-hover:brightness-105"
+                    : "group-hover:text-black dark:group-hover:text-gray-100"
+                }
+              >
                 {channel.slug}
               </span>
             </a>
