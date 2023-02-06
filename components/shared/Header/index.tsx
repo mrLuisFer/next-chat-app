@@ -17,14 +17,13 @@ const Header = (): JSX.Element => {
   const router = useRouter();
   const { handleDarkMode, chakraColorMode } = useSetDarkMode();
 
-  console.log(router);
   return (
     <Box
       as="header"
       display="flex"
       alignItems="center"
       justifyContent="space-between"
-      p="1rem 2rem"
+      p={["1rem", "1rem 2rem"]}
       boxShadow="0 3px 3px rgba(0, 0, 0, 0.05)"
       color="blackAlpha.600"
       fontSize="1rem"
@@ -54,7 +53,7 @@ const Header = (): JSX.Element => {
           </CustomButton>
         </List>
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="flex-end" gridGap="1rem">
+      <Box display={["none", "none", "flex"]} alignItems="center" justifyContent="flex-end" gridGap="1rem">
         <CustomButton
           asLink
           href="/auth/register"
@@ -79,6 +78,13 @@ const Header = (): JSX.Element => {
           </Box>
         </Tooltip>
       </Box>
+      <Tooltip label="Change theme">
+        <Box display={["block", "block", "none"]}>
+          <CustomButton onClick={handleDarkMode}>
+            {chakraColorMode === "light" ? <BsMoonStarsFill size={15} /> : <TiLightbulb size={20} />}
+          </CustomButton>
+        </Box>
+      </Tooltip>
     </Box>
   );
 };
