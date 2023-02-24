@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { BiLogInCircle } from "react-icons/bi";
 import { SlLogin } from "react-icons/sl";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const Home: NextPage = () => {
       <Box as="main">
         <Header />
         <Box as="section" minH="100vh" display="flex" gap="2rem" justifyContent="space-between">
-          <div className="h-screen mt-12 md:mt-0 flex flex-col items-center justify-start md:justify-center gap-4 md:gap-10 w-full lg:w-1/2 px-6 md:p-8 lg:pl-11">
+          <div className="h-screen mt-12 md:mt-0 lg:mt-12 flex flex-col items-center justify-start md:justify-start gap-4 md:gap-10 w-full lg:w-1/2 px-6 md:p-8 lg:pl-11">
             <h1 className="font-bold text-5xl md:text-6xl m-0 text-gray-800 dark:text-gray-200">
               Welcome to <span className="text-black dark:text-white">Next Chat</span>
             </h1>
@@ -42,32 +43,35 @@ const Home: NextPage = () => {
             </p>
             <div className="flex flex-col justify-start lg:items-center w-full lg:w-auto">
               <p className="text-gray-500 mb-4 mt-6 flex-1 text-left w-full">Let&apos;s get started</p>
-              <button
+              <motion.button
                 className="p-4 bg-blue-600 text-white rounded-xl transition font-bold text-lg group flex items-center justify-center gap-2 max-w-[300px] lg:w-[400px] lg:max-w-[400px]"
                 onClick={() => {
                   void router.push("/auth/login");
                 }}
               >
                 Log In
-                <span className="opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition">
+                <span className="translate-x-0 group-hover:translate-x-2 transition">
                   <BiLogInCircle size="1.5rem" />
                 </span>
-              </button>
+              </motion.button>
               <div className="group">
                 <p className="text-gray-500 mb-0 mt-8 text-left w-full group-hover:text-gray-400">
                   Doesn&apos;t have an account?
                 </p>
-                <button
+                <motion.button
                   className="p-3 rounded-xl bg-black text-white transition font-bold text-lg opacity-70 group-hover:opacity-100 flex items-center justify-center gap-2 max-w-[300px] lg:w-[400px] lg:max-w-[400px]"
                   onClick={() => {
                     void router.push("/auth/register");
                   }}
                 >
                   Sign Up
-                  <span className="opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition">
+                  <span className="translate-x-0 group-hover:translate-x-2 transition">
                     <SlLogin size="1.2rem" />
                   </span>
-                </button>
+                </motion.button>
+              </div>
+              <div className="w-full">
+                <p className="mt-6 opacity-70 font-semibold text-left">Or continue with:</p>
               </div>
             </div>
           </div>

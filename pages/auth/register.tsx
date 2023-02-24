@@ -139,7 +139,7 @@ const Register: NextPage = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-black text-white font-bold rounded-md py-2 px-4 hover:shadow-sm active:scale-95 transition border-2 border-black dark:hover:border-white hover:border-gray-800"
+            className="w-full bg-black text-white font-bold rounded-lg py-2 px-4 hover:shadow-sm active:scale-95 transition border-2 border-black dark:hover:border-white hover:border-gray-800"
           >
             Register
           </button>
@@ -154,7 +154,7 @@ const Register: NextPage = () => {
           <Link href="/auth/login">
             <a
               ref={loginMsgRef}
-              className="ml-2 bg-black text-white rounded-md px-4 py-1 cursor-pointer border-2 border-black hover:border-gray-700 dark:hover:border-gray-300 active:scale-95 transition"
+              className="ml-2 bg-black text-white rounded-lg px-4 py-1 cursor-pointer border-2 border-black hover:border-gray-700 dark:hover:border-gray-300 active:scale-95 transition"
             >
               Login
             </a>

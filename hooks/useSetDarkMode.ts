@@ -5,10 +5,20 @@ export const useSetDarkMode = (): { chakraColorMode: ColorMode; handleDarkMode: 
 
   const handleDarkMode = (): void => {
     toggleColorMode();
-    document.querySelector("html")?.classList.toggle("dark");
-    const isDarkMode: boolean = document.querySelector("html")?.classList.contains("dark") ?? false;
-    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+    const htmlElement = document.querySelector("html");
+    if (htmlElement == null) return;
+
+    if (colorMode === "light") {
+      htmlElement.classList.remove("light");
+      htmlElement.classList.add("dark");
+    } else {
+      htmlElement.classList.remove("dark");
+      htmlElement.classList.add("light");
+    }
+
+    localStorage.setItem("theme", colorMode);
   };
 
+  console.log(colorMode);
   return { chakraColorMode: colorMode, handleDarkMode };
 };

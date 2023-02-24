@@ -13,13 +13,18 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 
   useEffect(() => {
     const theme = localStorage?.getItem("theme");
-    if (theme === null) {
-      localStorage?.setItem("theme", "light");
-      return;
-    }
 
-    if (theme === "dark") {
-      document.querySelector("html")?.classList.add("dark");
+    if (theme === null) return;
+
+    const htmlElement = document.querySelector("html");
+    if (htmlElement == null) return;
+
+    if (theme === "light") {
+      htmlElement.classList.remove("light");
+      htmlElement.classList.add("dark");
+    } else {
+      htmlElement.classList.remove("dark");
+      htmlElement.classList.add("light");
     }
   }, []);
 

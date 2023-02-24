@@ -28,6 +28,8 @@ const Header = (): JSX.Element => {
       color="blackAlpha.600"
       fontSize="1rem"
       className="dark:bg-gray-900 dark:text-white dark:shadow-slate-500"
+      position="relative"
+      zIndex={10}
     >
       <Box display="flex" alignItems="center" gridGap="1rem">
         <CustomButton
